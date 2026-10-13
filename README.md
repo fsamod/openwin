@@ -15,7 +15,7 @@ OpenWin lets you discover Windows software, browse curated collections and categ
 - **Categories:** Explore apps grouped by browsers, development, media, utilities, security, and office tools.
 - **Package Details:** Inspect version numbers, licenses, verified publishers, package IDs, and upstream manifest links.
 - **My Apps Basket:** Select multiple applications and get a single batch of exact install commands.
-- **Shareable baskets:** Copy a link — anyone opening it gets your basket prefilled.
+- **Shareable baskets:** self-explanatory
 - **Install options:** Pick output format (commands, PowerShell, winget configure), scope, silent flag, and version pinning.
 - **Safe Command Generation:** Commands are generated as plain text using `--exact` package IDs. Nothing is installed automatically; you inspect and run the commands yourself in Command Prompt or Windows Terminal.
 
