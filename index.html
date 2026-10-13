@@ -52,6 +52,10 @@
             My Apps (<span id="basketCount">0</span>)
           </button>
           <button id="tabAbout" type="button" class="tab" aria-pressed="false">About</button>
+          <button id="tabSupport" type="button" class="tab" aria-pressed="false">
+            <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></svg>
+            Support
+          </button>
         </nav>
       </div>
     </header>
@@ -125,6 +129,20 @@
             <a href="https://github.com/fsamod/openwin/issues" target="_blank" rel="noopener noreferrer">Report an issue ↗</a> ·
             <a href="https://github.com/fsamod/openwin/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License ↗</a>
           </p>
+        </section>
+
+        <section id="supportView" aria-label="Support" hidden>
+          <h2>Support OpenWin</h2>
+          <p>
+            OpenWin is free and built in my spare time. If it saved you a fresh-install headache,
+            you can tip in crypto. Tips are voluntary and never unlock anything.
+          </p>
+          <div class="donate-list">
+            <div class="donate-row"><span class="donate-label">Solana</span><code id="donSol">HntwBQHT4LqKMCPjib8zkvQHqcfWZQ65DJyrsTisMCSy</code><button type="button" class="mini-btn" data-copy="donSol">Copy</button></div>
+            <div class="donate-row"><span class="donate-label">Ethereum</span><code id="donEth">0x328373857c3932f9edeb0918b46884f57a99a00</code><button type="button" class="mini-btn" data-copy="donEth">Copy</button></div>
+            <div class="donate-row"><span class="donate-label">Bitcoin</span><code id="donBtc">bc1pyzzlumc4j4p0khv78zfsnc04skfrvj5j80zl3actuhen247zru4js9ulj52</code><button type="button" class="mini-btn" data-copy="donBtc">Copy</button></div>
+          </div>
+          <p id="donateStatus" class="muted small" role="status"></p>
         </section>
       </div>
 
@@ -256,6 +274,7 @@
         <div>
           <h3>OpenWin</h3>
           <a href="#" data-view="about">About</a>
+          <a href="#" data-view="support">Support</a>
           <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer">Source Code</a>
           <a href="https://github.com/microsoft/winget-pkgs" target="_blank" rel="noopener noreferrer">winget-pkgs (MIT)</a>
         </div>

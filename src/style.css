@@ -75,6 +75,20 @@ a { color: var(--accent); }
   font-family: inherit;
 }
 .tab[aria-pressed="true"] { color: var(--text); background: var(--card); }
+.tab .heart { width: 0.9em; height: 0.9em; vertical-align: -0.08em; color: #f472b6; }
+.donate-list { display: grid; gap: 0.5rem; margin: 1rem 0; }
+.donate-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+}
+.donate-label { flex: none; width: 70px; color: var(--muted); }
+.donate-row code { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 0.75rem; }
 
 .layout {
   max-width: var(--max);

@@ -64,13 +64,13 @@ const state = {
 
 const els = {};
 for (const id of [
-  'searchInput', 'tabDiscover', 'tabBasket', 'tabAbout', 'basketCount', 'basketCount2',
+  'searchInput', 'tabDiscover', 'tabBasket', 'tabAbout', 'tabSupport', 'basketCount', 'basketCount2',
   'catalogNotice', 'aboutStats',
-  'discoverView', 'basketView', 'aboutView', 'featuredSection', 'featuredGrid', 'featuredTabs',
+  'discoverView', 'basketView', 'aboutView', 'supportView', 'featuredSection', 'featuredGrid', 'featuredTabs',
   'browseHeading', 'categoryNav', 'resultMeta', 'appGrid',
   'moreBtn', 'emptyState', 'clearSearch', 'basketGrid', 'basketEmpty',
   'backToBrowse', 'basketList', 'clearBasket', 'scriptOutput', 'copyScript',
-  'shareBasket', 'formatSelect', 'scopeSelect', 'silentCheck', 'pinCheck',
+  'shareBasket', 'formatSelect', 'scopeSelect', 'silentCheck', 'pinCheck', 'donateStatus',
   'copyStatus', 'detailOverlay', 'detailIcon', 'detailName', 'detailVerifiedBadge',
   'detailPublisher', 'detailVerifiedLink', 'detailDesc', 'detailId', 'detailCopyId', 'detailVersion',
   'detailCategory', 'detailHome', 'detailTags', 'detailToggle', 'detailClose',
@@ -611,12 +611,13 @@ function buildScript() {
 function renderBasket() {
   els.basketCount.textContent = String(state.basket.length);
   if (els.basketCount2) els.basketCount2.textContent = String(state.basket.length);
-  for (const [tab, view] of [['tabDiscover', 'discover'], ['tabBasket', 'basket'], ['tabAbout', 'about']]) {
+  for (const [tab, view] of [['tabDiscover', 'discover'], ['tabBasket', 'basket'], ['tabAbout', 'about'], ['tabSupport', 'support']]) {
     if (els[tab]) els[tab].setAttribute('aria-pressed', String(state.view === view));
   }
   els.discoverView.hidden = state.view !== 'discover';
   els.basketView.hidden = state.view !== 'basket';
   if (els.aboutView) els.aboutView.hidden = state.view !== 'about';
+  if (els.supportView) els.supportView.hidden = state.view !== 'support';
 
   const items = state.basket.map((id) => state.byId.get(id)).filter(Boolean);
   els.basketList.innerHTML = '';
@@ -979,6 +980,19 @@ async function init() {
   els.tabDiscover.addEventListener('click', () => setView('discover'));
   els.tabBasket.addEventListener('click', () => setView('basket'));
   if (els.tabAbout) els.tabAbout.addEventListener('click', () => setView('about'));
+  if (els.tabSupport) els.tabSupport.addEventListener('click', () => setView('support'));
+  document.querySelectorAll('#supportView [data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = document.getElementById(btn.dataset.copy);
+      if (!code) return;
+      try {
+        await navigator.clipboard.writeText(code.textContent);
+        els.donateStatus.textContent = 'Copied. Thank you!';
+      } catch {
+        els.donateStatus.textContent = 'Copy failed. Select the address manually.';
+      }
+    });
+  });
   document.querySelectorAll('footer a[data-view]').forEach((a) => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
