@@ -89,9 +89,11 @@ Contributions, bug reports, and suggestions are welcome:
 
 OpenWin is free and built in my spare time. If it saved you a fresh-install headache, you can tip in crypto:
 
-- **Solana:** `YOUR_SOL_ADDRESS_HERE`
+- **Solana:** `HntwBQHT4LqKMCPjib8zkvQHqcfWZQ65DJyrsTisMCSy`
+- **Ethereum:** `0x328373857c3932f9edeb0918b46884f57a99a00`
+- **Bitcoin:** `bc1pyzzlumc4j4p0khv78zfsnc04skfrvj5j80zl3actuhen247zru4js9ulj52`
 
-Replace the placeholder with a real address to activate. Tips are voluntary and never unlock anything.
+Tips are voluntary and never unlock anything.
 
 ## License
 
