@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0e0e13" />
+    <meta
+      name="description"
+      content="OpenWin: discover Windows apps and generate safe winget install commands."
+    />
+    <title>OpenWin - Windows App Directory</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer" id="brandHome" title="OpenWin on GitHub">
+          <span class="brand-dots" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <defs>
+                <linearGradient id="whubg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#3b82f6" />
+                  <stop offset="1" stop-color="#1d4ed8" />
+                </linearGradient>
+              </defs>
+              <rect x="1" y="1" width="22" height="22" rx="6" fill="url(#whubg)" />
+              <text x="12" y="17" text-anchor="middle" font-family="Consolas,monospace" font-size="12" font-weight="bold" fill="#fff">&gt;_</text>
+            </svg>
+          </span>
+          <span class="brand-name">OpenWin</span>
+        </a>
+        <label class="search-wrap">
+          <span class="visually-hidden">Search apps</span>
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="Search apps, publishers, or exact package IDs…  ( / )"
+            autocomplete="off"
+          />
+        </label>
+        <nav class="tabs" aria-label="Views">
+          <button id="tabDiscover" type="button" class="tab" aria-pressed="true">Discover</button>
+          <button id="tabBasket" type="button" class="tab" aria-pressed="false">
+            My Apps (<span id="basketCount">0</span>)
+          </button>
+          <button id="tabAbout" type="button" class="tab" aria-pressed="false">About</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="layout">
+      <div class="main-col">
+        <p id="catalogNotice" class="notice" hidden></p>
+
+        <section id="discoverView" aria-label="Discover apps">
+          <section id="featuredSection" aria-label="Popular apps">
+            <div class="featured-tabs-wrap">
+              <div class="seg" id="featuredTabs" role="tablist" aria-label="Featured collections">
+                <button type="button" class="featured-tab" role="tab" data-tab="trending" aria-selected="false">Trending</button>
+                <button type="button" class="featured-tab" role="tab" data-tab="popular" aria-selected="true">Popular</button>
+                <button type="button" class="featured-tab" role="tab" data-tab="new" aria-selected="false">New</button>
+                <button type="button" class="featured-tab" role="tab" data-tab="updated" aria-selected="false">Updated</button>
+              </div>
+            </div>
+            <div id="featuredGrid" class="grid"></div>
+          </section>
+
+          <section aria-label="Browse categories">
+            <div id="categorySections"></div>
+          </section>
+
+          <section aria-label="Spotlight apps">
+            <div class="section-head">
+              <h2 id="browseHeading">Spotlight apps</h2>
+            </div>
+            <nav id="categoryNav" class="pills" aria-label="Filter by category"></nav>
+            <p id="resultMeta" class="result-meta" aria-live="polite"></p>
+            <div id="appGrid" class="grid"></div>
+            <div class="more-wrap">
+              <button id="moreBtn" type="button" class="btn">Show more</button>
+            </div>
+            <div id="emptyState" class="empty" hidden>
+              <p><strong>No apps match your search.</strong></p>
+              <p class="muted">Try an exact package ID (e.g. <code>VideoLAN.VLC</code>), a publisher name, or fewer words.</p>
+              <button id="clearSearch" type="button" class="btn">Clear search</button>
+            </div>
+          </section>
+        </section>
+
+        <section id="basketView" aria-label="My Apps" hidden>
+          <h2>My Apps</h2>
+          <div id="basketEmpty" class="empty">
+            <p><strong>No apps selected yet.</strong></p>
+            <p class="muted">Click an app to add it, then copy your install command.</p>
+            <button id="backToBrowse" type="button" class="btn">Browse apps</button>
+          </div>
+          <div id="basketGrid" class="grid"></div>
+        </section>
+
+        <section id="aboutView" aria-label="About" hidden>
+          <h2>About OpenWin</h2>
+          <p class="muted small">by fsamod</p>
+          <p>
+            OpenWin is a free, open-source app catalog for Windows. Browse thousands of winget packages, choose the apps you need, and copy a single command to install them yourself.
+          </p>
+          <p>
+            No accounts, no tracking, and no custom installers. OpenWin generates commands for you to inspect and run on your own PC.
+          </p>
+          <p id="aboutStats" class="muted"></p>
+          <p>
+            Built by fsamod. Package metadata comes from Microsoft's community
+            <a href="https://github.com/microsoft/winget-pkgs" target="_blank" rel="noopener noreferrer">winget-pkgs</a>
+            repository.
+          </p>
+          <p class="about-links">
+            <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer">View source on GitHub ↗</a> ·
+            <a href="https://github.com/fsamod/openwin/issues" target="_blank" rel="noopener noreferrer">Report an issue ↗</a> ·
+            <a href="https://github.com/fsamod/openwin/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License ↗</a>
+          </p>
+        </section>
+      </div>
+
+      <aside id="basketPanel" class="basket" aria-label="Install command">
+        <h2>My Apps (<span id="basketCount2">0</span>)</h2>
+        <ol id="basketList" class="basket-list"></ol>
+        <div class="basket-controls">
+          <button id="clearBasket" type="button" class="link-btn">Clear all</button>
+        </div>
+        <pre id="scriptOutput" class="script-preview" tabindex="0" aria-label="Generated install commands"></pre>
+        <div class="script-actions">
+          <button id="copyScript" type="button" class="btn btn-primary">Copy</button>
+        </div>
+        <p id="copyStatus" class="muted small" role="status"></p>
+
+        <div class="warning" role="note">
+          <strong>Run this yourself on Windows.</strong>
+          <p>
+            Paste it into CMD / Terminal on your own PC (Windows 10 1809+ with
+            App Installer). Only install software you trust.
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <div id="detailOverlay" class="overlay" hidden>
+      <div class="detail flathub-detail" role="dialog" aria-modal="true" aria-labelledby="detailName">
+        <button id="detailClose" type="button" class="detail-close" aria-label="Close details">✕</button>
+        <div class="detail-header">
+          <div class="detail-icon-wrap" id="detailIcon"></div>
+          <div class="detail-title-col">
+            <div class="detail-title-row">
+              <h2 id="detailName"></h2>
+              <span id="detailVerifiedBadge" class="verified-check" title="Featured app" aria-label="Featured app" role="img"></span>
+            </div>
+            <p id="detailPublisher" class="detail-pub"></p>
+            <div class="detail-verified-link-row">
+              <a id="detailVerifiedLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-verified-pill"></a>
+            </div>
+          </div>
+          <div class="detail-action-col">
+            <button id="detailToggle" type="button" class="btn btn-flathub-install">Add to My Apps</button>
+          </div>
+        </div>
+
+        <div class="detail-stats-bar" id="detailStatsBar">
+          <div class="stat-item">
+            <span class="stat-val" id="detailStatLicense">Free</span>
+            <span class="stat-lbl">License</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val" id="detailStatPlatform">Win 10/11</span>
+            <span class="stat-lbl">Platform</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val" id="detailStatType">Desktop</span>
+            <span class="stat-lbl">Environment</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val" id="detailStatCategory">N/A</span>
+            <span class="stat-lbl">Category</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val" id="detailStatDownloads">Spotlight</span>
+            <span class="stat-lbl">Tier</span>
+          </div>
+        </div>
+
+        <div class="detail-body-section">
+          <h3 class="detail-section-title">About this app</h3>
+          <p id="detailDesc" class="detail-long-desc"></p>
+        </div>
+
+        <div class="detail-body-section">
+          <h3 class="detail-section-title">Package Details</h3>
+          <dl class="detail-meta">
+            <div><dt>Package ID</dt><dd><code id="detailId"></code> <button id="detailCopyId" type="button" class="mini-btn">Copy</button></dd></div>
+            <div><dt>Version</dt><dd id="detailVersion"></dd></div>
+            <div><dt>Category</dt><dd id="detailCategory"></dd></div>
+            <div><dt>Homepage</dt><dd><a id="detailHome" href="#" target="_blank" rel="noopener">None</a></dd></div>
+            <div><dt>Tags</dt><dd id="detailTags" class="muted"></dd></div>
+          </dl>
+        </div>
+
+        <div class="detail-body-section">
+          <h3 class="detail-section-title">Links</h3>
+          <div class="detail-links-list">
+            <a id="detailLinkWeb" class="detail-link-item" href="#" target="_blank" rel="noopener noreferrer">
+              <span>Project Website</span>
+              <span class="link-arrow">↗</span>
+            </a>
+            <a id="detailLinkManifest" class="detail-link-item" href="#" target="_blank" rel="noopener noreferrer">
+              <span>Winget Community Manifest</span>
+              <span class="link-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-cols">
+        <div>
+          <h3>Apps</h3>
+          <a href="#featuredSection">Popular</a>
+          <a href="#browseHeading">All apps</a>
+          <a href="#tileNav">Categories</a>
+        </div>
+        <div>
+          <h3>OpenWin</h3>
+          <a href="#" data-view="about">About</a>
+          <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer">Source Code</a>
+          <a href="https://github.com/microsoft/winget-pkgs" target="_blank" rel="noopener noreferrer">winget-pkgs (MIT)</a>
+        </div>
+        <div>
+          <h3>Resources</h3>
+          <a href="https://learn.microsoft.com/windows/package-manager/" target="_blank" rel="noopener noreferrer">winget docs</a>
+          <a href="https://github.com/fsamod/openwin/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
+          <a href="https://github.com/fsamod/openwin/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a>
+        </div>
+      </div>
+      <p id="catalogMeta" class="muted small"></p>
+      <p class="muted small">Static site. No backend, no tracking, no accounts. Built by fsamod · <span id="appVersion">v0.2.0</span></p>
+    </footer>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

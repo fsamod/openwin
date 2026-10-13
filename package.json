@@ -1,0 +1,18 @@
+{
+  "name": "openwin",
+  "private": true,
+  "version": "0.2.0",
+  "description": "Flathub-inspired browser for Windows apps (winget). Search, basket, bulk-install script generator.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "generate:catalog": "node tools/build-catalog.mjs --workdir .cache/winget-pkgs-src --output public/data",
+    "refresh:popular": "node tools/refresh-popular.mjs",
+    "check:icons": "node tools/check-icon-urls.mjs"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

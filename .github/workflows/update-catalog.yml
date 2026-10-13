@@ -1,0 +1,55 @@
+# Regenerate the winget-hub catalog from upstream manifests.
+#
+# - Weekly schedule + manual trigger (workflow_dispatch).
+# - Commits ONLY public/data/catalog-full.json and public/data/popular.json.
+#   The upstream checkout lives in .cache/ (actions/cache) and is never committed.
+# - build-catalog.mjs exits non-zero when the index is incomplete, which fails
+#   this workflow BEFORE anything is committed. The site will not present a
+#   partial index as the full catalog.
+
+name: update-catalog
+
+on:
+  schedule:
+    - cron: '0 3 * * 0' # Sundays 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache upstream checkout
+        uses: actions/cache@v4
+        with:
+          path: .cache/winget-pkgs-src
+          key: winget-pkgs-${{ github.run_id }}
+          restore-keys: winget-pkgs-
+
+      - name: Generate catalog
+        run: node tools/build-catalog.mjs --workdir .cache/winget-pkgs-src --output public/data
+
+      - name: Size guard (fail over 40 MB)
+        run: |
+          bytes=$(wc -c < public/data/catalog-full.json)
+          echo "catalog-full.json bytes: $bytes"
+          test "$bytes" -lt 41943040
+
+      - name: Commit updated index
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/data/catalog-full.json public/data/popular.json
+          git diff --cached --quiet && echo 'catalog unchanged' && exit 0
+          count=$(node -e "console.log(require('./public/data/catalog-full.json').meta.count)")
+          sha=$(node -e "console.log(require('./public/data/catalog-full.json').meta.upstreamCommit)")
+          git commit -m "chore(catalog): regenerate index ($count packages, upstream $sha)"
+          git push
