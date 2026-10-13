@@ -1,7 +1,7 @@
 {
   "name": "openwin",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "OpenWin: discover Windows apps and generate winget install commands.",
   "type": "module",
   "scripts": {
