@@ -8,6 +8,12 @@ A free, open-source app catalog for Windows powered by winget.
 
 OpenWin lets you discover Windows software, browse curated collections and categories, queue up multiple apps into a personal basket, and generate clean `winget install` commands to run on your own PC.
 
+## Screenshots
+
+![Discover view](docs/discover.png)
+![Basket with generated commands](docs/basket.png)
+![Package details](docs/detail.png)
+
 ## Features
 
 - **Instant Search:** Find applications by name, exact package ID, publisher, or tags.
