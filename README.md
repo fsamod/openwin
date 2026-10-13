@@ -1,5 +1,12 @@
 # OpenWin
 
+![OpenWin logo](docs/logo.svg)
+
+**Discover Windows apps and generate safe winget install commands. Free, open-source, no tracking.**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Ffsamod.github.io%2Fopenwin)](https://fsamod.github.io/openwin/)
+
 A free, open-source app catalog for Windows powered by winget.
 
 - **Website:** [fsamod.github.io/openwin](https://fsamod.github.io/openwin/)
@@ -77,6 +84,14 @@ Contributions, bug reports, and suggestions are welcome:
 
 1. **Issues:** Report bugs or suggest features using the [GitHub issue tracker](https://github.com/fsamod/openwin/issues).
 2. **Pull Requests:** Fork the repository, create a branch for your change, test your changes locally with `npm run build`, and open a pull request.
+
+## Support
+
+OpenWin is free and built in my spare time. If it saved you a fresh-install headache, you can tip in crypto:
+
+- **Solana:** `YOUR_SOL_ADDRESS_HERE`
+
+Replace the placeholder with a real address to activate. Tips are voluntary and never unlock anything.
 
 ## License
 
