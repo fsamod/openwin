@@ -17,13 +17,9 @@ OpenWin lets you discover Windows software, browse curated collections and categ
 
 ## Demo
 
-https://github.com/fsamod/openwin/releases/download/v0.3.0/opencode-demo.mp4
+![OpenWin demo](https://github.com/fsamod/openwin/releases/download/v0.3.0/demo-teaser.gif)
 
-## Screenshots
-
-![Discover view](docs/discover.png)
-![Basket with generated commands](docs/basket.png)
-![Package details](docs/detail.png)
+[Watch the full video](https://github.com/fsamod/openwin/releases/download/v0.3.0/opencode-demo.mp4)
 
 ## Features
 
