@@ -1,7 +1,8 @@
 import { isGenericHost } from './icon-sources.js';
 
 const ID_PATTERN = /^[A-Za-z0-9+][A-Za-z0-9._+-]{1,126}[A-Za-z0-9+]$/;
-const STORAGE_KEY = 'winget-hub-basket-v1';
+const STORAGE_KEY = 'openwin-basket-v1';
+const OLD_STORAGE_KEY = 'winget-hub-basket-v1';
 const PAGE_SIZE = 60;
 
 const CATEGORY_LABELS = {
@@ -52,7 +53,6 @@ const state = {
   sectionOpen: new Set(),
   query: '',
   category: 'all',
-  sort: 'popular',
   featuredTab: 'popular',
   view: 'discover',
   basket: [],
@@ -152,7 +152,7 @@ function avatarEl(app) {
 
 function loadBasket() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(OLD_STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
@@ -165,6 +165,7 @@ function loadBasket() {
 function saveBasket() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state.basket));
+    localStorage.removeItem(OLD_STORAGE_KEY);
   } catch {}
 }
 
@@ -217,11 +218,6 @@ function filteredApps() {
   }
   scored.sort((a, b) => a[0] - b[0] || (a[1].name < b[1].name ? -1 : 1));
   list = scored.map((x) => x[1]);
-  if (state.sort === 'publisher') {
-    list = [...list].sort((a, b) => (a.publisher < b.publisher ? -1 : 1));
-  } else if (state.sort === 'name') {
-    list = [...list].sort((a, b) => (a.name < b.name ? -1 : 1));
-  }
   return list;
 }
 
@@ -652,7 +648,7 @@ function openDetail(id) {
 function syncDetailToggle() {
   const inBasket = state.basket.includes(state.detailId);
   els.detailToggle.textContent = inBasket ? 'Remove from My Apps' : 'Add to My Apps';
-  els.detailToggle.className = inBasket ? 'btn btn-flathub-installed' : 'btn btn-flathub-install';
+  els.detailToggle.className = inBasket ? 'btn btn-installed' : 'btn btn-install';
 }
 
 function closeDetail() {

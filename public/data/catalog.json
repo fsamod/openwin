@@ -1,6 +1,6 @@
 {
   "meta": {
-    "name": "winget-hub curated catalog (MVP)",
+    "name": "openwin curated catalog",
     "source": "https://github.com/microsoft/winget-pkgs",
     "license": "Upstream manifests are MIT. This file only stores IDs/names/descriptions.",
     "verifiedWith": "winget show --exact --id <id> --source winget",

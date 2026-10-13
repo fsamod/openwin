@@ -1,4 +1,4 @@
-# Featured apps for the winget-hub homepage (subset of full index).
+# Featured apps for the OpenWin homepage (subset of full index).
 # One exact package ID per line. Lines starting with # are ignored.
 Google.Chrome
 Mozilla.Firefox
@@ -110,7 +110,6 @@ Ecosia.EcosiaBrowser
 
 # --- graphics & design ---
 KDE.Krita
-Inkscape.Inkscape
 Figma.Figma
 
 # --- research & notes ---

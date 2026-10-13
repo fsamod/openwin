@@ -432,7 +432,7 @@ a { color: var(--accent); }
   padding: 1rem;
 }
 .overlay[hidden] { display: none; }
-.flathub-detail {
+.app-detail {
   background: #1e1e24;
   border: 1px solid #30303c;
   border-radius: 20px;
@@ -521,7 +521,7 @@ a { color: var(--accent); }
 }
 .detail-verified-pill:hover { text-decoration: underline; }
 
-.btn-flathub-install {
+.btn-install {
   background: #2563eb;
   color: #fff;
   border: none;
@@ -533,14 +533,14 @@ a { color: var(--accent); }
   white-space: nowrap;
   transition: background 0.15s ease, transform 0.1s ease;
 }
-.btn-flathub-install:hover { background: #1d4ed8; }
-.btn-flathub-install:active { transform: scale(0.98); }
-.btn-flathub-installed {
+.btn-install:hover { background: #1d4ed8; }
+.btn-install:active { transform: scale(0.98); }
+.btn-installed {
   background: #2e303d;
   color: var(--muted);
   border: 1px solid #44475a;
 }
-.btn-flathub-installed:hover { background: #3b3d4d; color: var(--text); }
+.btn-installed:hover { background: #3b3d4d; color: var(--text); }
 
 .detail-stats-bar {
   display: grid;
@@ -659,5 +659,5 @@ a { color: var(--accent); }
   .search-wrap { order: 3; flex-basis: 100%; max-width: none; }
   .grid { grid-template-columns: 1fr; }
   .detail-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .btn-flathub-install { width: 100%; }
+  .btn-install { width: 100%; }
 }

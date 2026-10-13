@@ -194,7 +194,7 @@ async function downloadSubset(workdir, commitSha, wanted, concurrency = 10) {
       try {
         const res = await fetch(url, {
           signal: ctrl.signal,
-          headers: { 'User-Agent': 'winget-hub-catalog-generator' }
+          headers: { 'User-Agent': 'openwin-catalog-generator' }
         });
         if (res.status === 200) return await res.text();
         if (res.status === 404) return null; 
