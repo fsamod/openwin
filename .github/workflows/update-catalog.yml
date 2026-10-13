@@ -1,12 +1,4 @@
-# Regenerate the winget-hub catalog from upstream manifests.
-#
-# - Weekly schedule + manual trigger (workflow_dispatch).
-# - Commits ONLY public/data/catalog-full.json and public/data/popular.json.
-#   The upstream checkout lives in .cache/ (actions/cache) and is never committed.
-# - build-catalog.mjs exits non-zero when the index is incomplete, which fails
-#   this workflow BEFORE anything is committed. The site will not present a
-#   partial index as the full catalog.
-
+# weekly winget catalog refresh
 name: update-catalog
 
 on:
