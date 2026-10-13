@@ -9,6 +9,14 @@
       content="OpenWin: discover Windows apps and generate safe winget install commands."
     />
     <title>OpenWin - Windows App Directory</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='1' y='1' width='22' height='22' rx='6' fill='%231d4ed8'/%3E%3Ctext x='12' y='17' text-anchor='middle' font-family='monospace' font-size='11' font-weight='bold' fill='white'%3E%3E_%3C/text%3E%3C/svg%3E" />
+    <meta property="og:title" content="OpenWin - Windows App Directory" />
+    <meta
+      property="og:description"
+      content="Discover Windows apps and generate safe winget install commands."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
     <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
@@ -126,9 +134,28 @@
         <div class="basket-controls">
           <button id="clearBasket" type="button" class="link-btn">Clear all</button>
         </div>
+        <div class="install-opts">
+          <label class="opt">Format
+            <select id="formatSelect">
+              <option value="commands">Commands</option>
+              <option value="powershell">PowerShell (.ps1)</option>
+              <option value="configure">winget configure (YAML)</option>
+            </select>
+          </label>
+          <label class="opt">Scope
+            <select id="scopeSelect">
+              <option value="default">Default</option>
+              <option value="user">User</option>
+              <option value="machine">Machine</option>
+            </select>
+          </label>
+          <label class="check"><input id="silentCheck" type="checkbox" checked /> Silent install</label>
+          <label class="check"><input id="pinCheck" type="checkbox" /> Pin indexed versions</label>
+        </div>
         <pre id="scriptOutput" class="script-preview" tabindex="0" aria-label="Generated install commands"></pre>
         <div class="script-actions">
           <button id="copyScript" type="button" class="btn btn-primary">Copy</button>
+          <button id="shareBasket" type="button" class="btn">Share</button>
         </div>
         <p id="copyStatus" class="muted small" role="status"></p>
 
@@ -197,6 +224,7 @@
             <div><dt>Version</dt><dd id="detailVersion"></dd></div>
             <div><dt>Category</dt><dd id="detailCategory"></dd></div>
             <div><dt>Homepage</dt><dd><a id="detailHome" href="#" target="_blank" rel="noopener">None</a></dd></div>
+            <div><dt>Source</dt><dd>winget community manifests</dd></div>
             <div><dt>Tags</dt><dd id="detailTags" class="muted"></dd></div>
           </dl>
         </div>

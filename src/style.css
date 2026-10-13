@@ -337,6 +337,19 @@ a { color: var(--accent); }
 .basket-list li { margin: 0.3rem 0; display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
 .basket-list code { font-size: 0.72rem; color: var(--muted); word-break: break-all; }
 .basket-controls { margin-bottom: 0.6rem; }
+.install-opts { display: grid; gap: 0.5rem; margin: 0.2rem 0 0.7rem; font-size: 0.83rem; }
+.install-opts .opt { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; color: var(--muted); }
+.install-opts select {
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.83rem;
+}
+.install-opts .check { display: flex; align-items: center; gap: 0.45rem; color: var(--muted); cursor: pointer; }
+.basket-list .dom { color: var(--muted); font-size: 0.72rem; }
 .script-preview {
   margin: 0;
   max-height: 170px;
