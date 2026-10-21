@@ -2,48 +2,40 @@
 
 ![OpenWin logo](docs/logo.svg)
 
-**Discover Windows apps and generate safe winget install commands. Free, open-source, no tracking.**
+A dark, Ninite-style app picker for Windows. Choose from a fixed list of 231 apps and copy exact `winget install` commands for the ones you need.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Ffsamod.github.io%2Fopenwin)](https://fsamod.github.io/openwin/)
 
-A free, open-source app catalog for Windows powered by winget.
-
 - **Website:** [fsamod.github.io/openwin](https://fsamod.github.io/openwin/)
 - **Repository:** [github.com/fsamod/openwin](https://github.com/fsamod/openwin)
-- **Issue Tracker:** [github.com/fsamod/openwin/issues](https://github.com/fsamod/openwin/issues)
+- **Issue tracker:** [github.com/fsamod/openwin/issues](https://github.com/fsamod/openwin/issues)
 
-OpenWin lets you discover Windows software, browse curated collections and categories, queue up multiple apps into a personal basket, and generate clean `winget install` commands to run on your own PC.
+## What it does
 
-## Demo
+OpenWin presents a reviewed set of Windows apps in 11 categories. You check the apps you want, review the exact commands, then copy them. The site never runs anything on your PC.
 
-![OpenWin demo](https://github.com/fsamod/openwin/releases/download/v0.3.0/demo-teaser.gif)
+- **Fixed catalog:** 231 apps across browsers, communications, development, documents, games, Microsoft tools, multimedia, professional tools, self-hosted software, utilities, and system utilities.
+- **Exact commands:** every selected app appears as one `winget install` command, using the `msstore` source where needed.
+- **Search and details:** find apps by name, publisher, or package ID. Each app has a details dialog with its package ID and homepage.
+- **Shareable selections:** the selected app list is stored in the URL and in local storage.
+- **No account or analytics:** the site is static and makes no third-party requests. Icons are served locally.
 
-[Watch the full video](https://github.com/fsamod/openwin/releases/download/v0.3.0/opencode-demo.mp4)
+## How it works
 
-## Features
+The app is a Vite site with no runtime framework. `src/main.js` renders the catalog, manages selection state, and handles copying and sharing. `src/install-commands.js` builds one exact command per selected app as plain text.
 
-- **Instant Search:** Find applications by name, exact package ID, publisher, or tags.
-- **Curated Collections:** Browse popular, trending, fresh arrivals, and updated tools via segmented collections.
-- **Categories:** Explore apps grouped by browsers, development, media, utilities, security, and office tools.
-- **Package Details:** Inspect version numbers, licenses, verified publishers, package IDs, and upstream manifest links.
-- **My Apps Basket:** Select multiple applications and get a single batch of exact install commands.
-- **Shareable baskets:** self-explanatory
-- **Install options:** Pick output format (commands, PowerShell, winget configure), scope, silent flag, and version pinning.
-- **Safe Command Generation:** Commands are generated as plain text using `--exact` package IDs. Nothing is installed automatically; you inspect and run the commands yourself in Command Prompt or Windows Terminal.
+Each command:
 
-## How It Works
+1. Uses the exact package ID and the correct `winget` or `msstore` source.
+2. Accepts the package and source agreements.
+3. Disables interactive prompts.
 
-OpenWin is a static web application that runs directly in your browser.
+Copy the commands into Windows Terminal and review them before running. Package IDs are checked against winget, but publishers control their own manifests and installers.
 
-- Application metadata is indexed from Microsoft's community [winget-pkgs](https://github.com/microsoft/winget-pkgs) repository.
-- Descriptions, tags, and categories reflect community manifest data, which can occasionally have minor classification inaccuracies or missing descriptions.
-- The web application never runs installation commands or scripts on your computer. You copy the generated commands and execute them on Windows 10 or 11 with Windows Package Manager installed.
-- Always review generated commands before running them, and only install software you trust.
+The package IDs in this build were checked against winget 1.29.380 on October 20, 2026. The catalog is fixed; it is not a live mirror of the winget repository.
 
-## Run Locally
-
-To run OpenWin on your computer:
+## Run locally
 
 ```cmd
 git clone https://github.com/fsamod/openwin.git
@@ -52,38 +44,38 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Open `http://localhost:5173`.
 
-### Building for Production
-
-To create an optimized production build:
+### Tests and production build
 
 ```cmd
+npm test
 npm run build
-```
-
-To preview the production build locally:
-
-```cmd
 npm run preview
 ```
 
-## Catalog Updates
+`npm test` runs the command-generation tests with Node's built-in test runner. The production site is written to `dist/`.
 
-The package index is refreshed automatically every Sunday at 03:00 UTC via GitHub Actions (`.github/workflows/update-catalog.yml`). You can also trigger the workflow manually from the **Actions** tab on GitHub using `workflow_dispatch`.
+## Catalog
 
-To regenerate the catalog index locally:
+The catalog lives in [`src/data/apps.json`](src/data/apps.json). Each app entry has an exact package ID, name, publisher, description, homepage, category, source, and local icon path. Icons live in `public/icons/`.
 
-```cmd
-npm run generate:catalog
-```
+To change the catalog:
+
+1. Add or edit the app entry.
+2. Add its icon to `public/icons/` and update the `icon` path.
+3. Verify the package with `winget show --exact --id <id> --source winget` or `--source msstore`.
+4. Run `npm test` and `npm run build`.
+
+There is no scheduled catalog refresh. The previous full-catalog generator and weekly workflow were removed because this build intentionally uses a reviewed, fixed list.
+
+## Deployment
+
+Pushes to `main` deploy `dist/` to GitHub Pages through `.github/workflows/deploy-pages.yml`. The Vite base path is relative, so the site also works from a project subdirectory.
 
 ## Contributing
 
-Contributions, bug reports, and suggestions are welcome:
-
-1. **Issues:** Report bugs or suggest features using the [GitHub issue tracker](https://github.com/fsamod/openwin/issues).
-2. **Pull Requests:** Fork the repository, create a branch for your change, test your changes locally with `npm run build`, and open a pull request.
+Bug reports and focused pull requests are welcome. Run `npm test` and `npm run build` before opening a pull request. Do not add a package without verifying its exact ID and source.
 
 ## Support
 
@@ -97,4 +89,4 @@ Tips are voluntary and never unlock anything.
 
 ## License
 
-OpenWin is open-source software licensed under the [MIT License](LICENSE). Package metadata comes from the upstream [winget-pkgs](https://github.com/microsoft/winget-pkgs) repository.
+OpenWin is open-source software licensed under the [MIT License](LICENSE). Package metadata and app icons belong to their respective publishers. OpenWin is not affiliated with Microsoft, Ninite, or any app publisher.

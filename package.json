@@ -1,15 +1,14 @@
 {
   "name": "openwin",
   "private": true,
-  "version": "0.3.0",
-  "description": "OpenWin: discover Windows apps and generate winget install commands.",
+  "version": "1.0.0",
+  "description": "A dark, Ninite-style Windows app picker that builds a copyable winget command list.",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "generate:catalog": "node tools/build-catalog.mjs --workdir .cache/winget-pkgs-src --output public/data",
-    "refresh:popular": "node tools/refresh-popular.mjs"
+    "test": "node --test"
   },
   "devDependencies": {
     "vite": "^6.0.0"
