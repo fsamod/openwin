@@ -65,6 +65,10 @@ const elements = {
   dialogHomeRow: byIdElement('dialogHomeRow'),
   dialogHome: byIdElement('dialogHome'),
   dialogToggle: byIdElement('dialogToggle'),
+  supportBtn: byIdElement('supportBtn'),
+  supportDialog: byIdElement('supportDialog'),
+  supportClose: byIdElement('supportClose'),
+  supportStatus: byIdElement('supportStatus'),
   catalogFootnote: byIdElement('catalogFootnote')
 };
 
@@ -77,6 +81,7 @@ let activeDialogId = null;
 let installSectionVisible = false;
 let statusTimer = null;
 let dialogStatusTimer = null;
+let supportStatusTimer = null;
 
 function normalize(value) {
   return String(value)
@@ -502,6 +507,62 @@ function initializeSelection() {
   });
 }
 
+function initializeSupport() {
+  elements.supportBtn.addEventListener('click', () => {
+    window.clearTimeout(supportStatusTimer);
+    elements.supportStatus.textContent = '';
+    elements.supportStatus.classList.remove('is-error');
+    elements.supportDialog.showModal();
+    document.body.classList.add('dialog-open');
+  });
+
+  elements.supportClose.addEventListener('click', () => {
+    elements.supportDialog.close();
+  });
+
+  elements.supportDialog.addEventListener('click', (event) => {
+    if (event.target !== elements.supportDialog) {
+      return;
+    }
+
+    const rect = elements.supportDialog.getBoundingClientRect();
+    const clickedBackdrop =
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom;
+
+    if (clickedBackdrop) {
+      elements.supportDialog.close();
+    }
+  });
+
+  elements.supportDialog.addEventListener('close', () => {
+    document.body.classList.remove('dialog-open');
+    window.clearTimeout(supportStatusTimer);
+  });
+
+  elements.supportDialog.querySelectorAll('[data-copy]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const code = document.getElementById(button.dataset.copy);
+      if (!code) {
+        return;
+      }
+
+      const copied = await copyText(code.textContent);
+      elements.supportStatus.textContent = copied
+        ? 'Address copied. Thank you!'
+        : 'Could not copy. Select the address manually.';
+      elements.supportStatus.classList.toggle('is-error', !copied);
+      window.clearTimeout(supportStatusTimer);
+      supportStatusTimer = window.setTimeout(() => {
+        elements.supportStatus.textContent = '';
+        elements.supportStatus.classList.remove('is-error');
+      }, 4000);
+    });
+  });
+}
+
 function initializeFooter() {
   const verified = new Date(`${appData.meta.verifiedOn}T00:00:00Z`);
   const verifiedLabel = Number.isNaN(verified.getTime())
@@ -653,6 +714,7 @@ function initializeInstallObserver() {
 renderCatalog();
 initializeSearch();
 initializeSelectionEvents();
+initializeSupport();
 initializeInstallObserver();
 initializeFooter();
 initializeSelection();

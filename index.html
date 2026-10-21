@@ -39,6 +39,9 @@
           <a href="#picker">Apps</a>
           <a href="#install">Commands</a>
           <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <button id="supportBtn" type="button" aria-haspopup="dialog" aria-controls="supportDialog">
+            Support
+          </button>
         </nav>
       </div>
     </header>
@@ -188,6 +191,51 @@
             Add to selection
           </button>
         </div>
+      </div>
+    </dialog>
+
+    <dialog
+      id="supportDialog"
+      class="app-dialog support-dialog"
+      aria-labelledby="supportHeading"
+      aria-describedby="supportIntro"
+    >
+      <div class="dialog-inner">
+        <button id="supportClose" class="dialog-close" type="button" aria-label="Close support">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+        </button>
+
+        <h2 id="supportHeading" class="support-heading">Support OpenWin</h2>
+        <p id="supportIntro" class="dialog-desc">
+          OpenWin is free and built in my spare time. If it saved you a fresh-install headache, you
+          can tip in crypto. Tips are voluntary and never unlock anything.
+        </p>
+
+        <div class="donate-list">
+          <div class="donate-row">
+            <span class="donate-label">Solana</span>
+            <code id="donSol">HntwBQHT4LqKMCPjib8zkvQHqcfWZQ65DJyrsTisMCSy</code>
+            <button class="mini-button" type="button" data-copy="donSol" aria-label="Copy Solana address">
+              Copy
+            </button>
+          </div>
+          <div class="donate-row">
+            <span class="donate-label">Ethereum</span>
+            <code id="donEth">0x328373857c3932f9edeb0918b46884f57a99a00</code>
+            <button class="mini-button" type="button" data-copy="donEth" aria-label="Copy Ethereum address">
+              Copy
+            </button>
+          </div>
+          <div class="donate-row">
+            <span class="donate-label">Bitcoin</span>
+            <code id="donBtc">bc1pyzzlumc4j4p0khv78zfsnc04skfrvj5j80zl3actuhen247zru4js9ulj52</code>
+            <button class="mini-button" type="button" data-copy="donBtc" aria-label="Copy Bitcoin address">
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <p id="supportStatus" class="dialog-status" role="status" aria-live="polite"></p>
       </div>
     </dialog>
 
