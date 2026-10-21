@@ -11,6 +11,12 @@ A dark, Ninite-style app picker for Windows. Choose from a fixed list of 231 rev
 - **Repository:** [github.com/fsamod/openwin](https://github.com/fsamod/openwin)
 - **Issue tracker:** [github.com/fsamod/openwin/issues](https://github.com/fsamod/openwin/issues)
 
+## Demo
+
+[![OpenWin demo](docs/openwin-demo.gif)](docs/openwin-demo.mp4)
+
+Click the preview to open the full video.
+
 ## What it does
 
 OpenWin presents a reviewed set of Windows apps in 11 categories. Pick what you need, review the commands, then copy them into Windows Terminal. The site never runs anything on your PC.
