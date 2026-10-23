@@ -5,6 +5,8 @@
 A dark, Ninite-style app picker for Windows. Choose from a fixed list of 231 reviewed apps and copy exact `winget install` commands for the ones you need.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/fsamod/openwin?style=flat&logo=github&color=gold)](https://github.com/fsamod/openwin/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/fsamod/openwin?style=flat&logo=github)](https://github.com/fsamod/openwin/network/members)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Ffsamod.github.io%2Fopenwin)](https://fsamod.github.io/openwin/)
 
 - **Website:** [fsamod.github.io/openwin](https://fsamod.github.io/openwin/)
