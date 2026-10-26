@@ -50,6 +50,12 @@ npm run preview
 
 The catalog is a fixed list in [`src/data/apps.json`](src/data/apps.json); icons live in `public/icons/`. Pushes to `main` deploy through GitHub Pages.
 
+## Localization
+
+Interface strings live in `src/locales/`. English is the default; a switcher in the header stores the choice in local storage, otherwise the browser language is used. Catalog app text (names, publishers, descriptions) stays English.
+
+To add a language, create `src/locales/xx.json` with all keys from `en.json`, import it and register it in the `LOCALES` map in `src/i18n.js`, and add the option to the switcher in `index.html`. `npm test` checks that translations cover every English key with the same placeholders.
+
 ## Contributing
 
 Bug reports and focused pull requests are welcome. Run `npm test` and `npm run build` before opening a pull request.

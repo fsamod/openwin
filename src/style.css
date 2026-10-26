@@ -186,7 +186,8 @@ img {
 }
 
 .site-nav a,
-.site-nav button {
+.site-nav button,
+.site-nav select {
   padding: 8px 0;
   border: 0;
   background: transparent;
@@ -200,6 +201,18 @@ img {
   color: var(--text);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.site-nav select {
+  cursor: pointer;
+  max-width: 96px;
+  border-radius: 4px;
+}
+
+.site-nav select:hover,
+.site-nav select:focus-visible {
+  color: var(--text);
+  outline: none;
 }
 
 /* Hero */

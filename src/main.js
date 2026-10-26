@@ -1,5 +1,6 @@
 import appData from './data/apps.json';
 import { buildCommandText } from './install-commands.js';
+import { countLabel, getLanguage, initI18n, t, onLanguageChange } from './i18n.js';
 
 const ICON_BASE = import.meta.env.BASE_URL || './';
 const STORAGE_KEY = 'openwin-selection-v1';
@@ -69,6 +70,7 @@ const elements = {
   supportDialog: byIdElement('supportDialog'),
   supportClose: byIdElement('supportClose'),
   supportStatus: byIdElement('supportStatus'),
+  languageSelect: byIdElement('languageSelect'),
   catalogFootnote: byIdElement('catalogFootnote')
 };
 
@@ -146,8 +148,10 @@ function createAppRow(app, index) {
   info.type = 'button';
   info.className = 'info-btn';
   info.dataset.id = app.id;
-  info.setAttribute('aria-label', `Details for ${app.name}`);
-  info.title = `Details for ${app.name}`;
+
+  const detailsLabel = t('details.aria', { name: app.name });
+  info.setAttribute('aria-label', detailsLabel);
+  info.title = detailsLabel;
 
   const glyph = document.createElement('span');
   glyph.className = 'info-glyph';
@@ -203,10 +207,6 @@ function renderCatalog() {
     elements.categoryColumns.append(section);
     categoryStates.push(state);
   }
-}
-
-function appCountLabel(count) {
-  return `${count} ${count === 1 ? 'app' : 'apps'}`;
 }
 
 function selectedApps() {
@@ -296,7 +296,7 @@ function updateDialogToggle() {
   }
 
   const isSelected = selected.has(activeDialogId);
-  elements.dialogToggle.textContent = isSelected ? 'Remove from selection' : 'Add to selection';
+  elements.dialogToggle.textContent = isSelected ? t('dialog.remove') : t('dialog.add');
   elements.dialogToggle.classList.toggle('button-primary', !isSelected);
   elements.dialogToggle.classList.toggle('button-secondary', isSelected);
 }
@@ -304,7 +304,7 @@ function updateDialogToggle() {
 function updateSelectionUI() {
   const list = selectedApps();
   const count = list.length;
-  const label = appCountLabel(count);
+  const label = countLabel(count);
 
   for (const [id, checkbox] of checkboxById) {
     const isSelected = selected.has(id);
@@ -316,7 +316,7 @@ function updateSelectionUI() {
   }
 
   elements.installSummary.textContent =
-    count === 0 ? 'Pick at least one app above.' : `${label} selected. Ready to copy your commands.`;
+    count === 0 ? t('summary.none') : t('summary.ready', { count: label });
   elements.copyBtn.disabled = count === 0;
   elements.shareBtn.disabled = count === 0;
   elements.stickyCount.textContent = label;
@@ -324,7 +324,7 @@ function updateSelectionUI() {
 
   elements.commandPreview.textContent =
     count === 0
-      ? '# Select at least one app to show its commands.'
+      ? t('preview.empty')
       : buildCommandText(list);
 
   updateStickyBar();
@@ -371,9 +371,13 @@ function applyFilter() {
 
   elements.emptyState.hidden = matches !== 0;
   elements.emptyMessage.textContent =
-    query === '' ? 'No apps match your search.' : `No apps match "${elements.searchInput.value.trim()}".`;
+    query === ''
+      ? t('empty.title')
+      : t('empty.titleQuery', { query: elements.searchInput.value.trim() });
   elements.resultCount.textContent =
-    query === '' ? appCountLabel(apps.length) : `${matches} of ${apps.length} apps`;
+    query === ''
+      ? countLabel(apps.length)
+      : t('result.matched', { matched: matches, total: apps.length });
 }
 
 function safeHttpUrl(value) {
@@ -391,9 +395,9 @@ function openDetails(app) {
   elements.dialogCopyStatus.textContent = '';
   elements.dialogIcon.replaceChildren(createIcon(app, 'dialog-icon-wrap'));
   elements.dialogName.textContent = app.name;
-  elements.dialogPublisher.textContent = app.publisher || 'Unknown publisher';
+  elements.dialogPublisher.textContent = app.publisher || t('dialog.unknown');
   elements.dialogSource.textContent =
-    app.source === 'msstore' ? 'Microsoft Store package' : 'winget package';
+    app.source === 'msstore' ? t('dialog.source.msstore') : t('dialog.source.winget');
   elements.dialogSource.classList.toggle('is-store', app.source === 'msstore');
   elements.dialogDesc.textContent = app.description;
   elements.dialogId.textContent = app.id;
@@ -403,7 +407,7 @@ function openDetails(app) {
   elements.dialogHomeRow.hidden = !homepage;
   if (homepage) {
     elements.dialogHome.href = homepage;
-    elements.dialogHome.textContent = 'Visit homepage';
+    elements.dialogHome.textContent = t('dialog.visit');
   }
 
   updateDialogToggle();
@@ -450,8 +454,8 @@ async function copyCommand() {
   const copied = await copyText(buildCommandText(list));
   showStatus(
     copied
-      ? `Copied commands for ${appCountLabel(list.length)}.`
-      : 'Could not copy automatically. Select the commands in the block instead.',
+      ? t('status.copied', { count: countLabel(list.length) })
+      : t('status.copyFailed'),
     !copied
   );
   if (!copied) {
@@ -466,10 +470,7 @@ async function shareSelection() {
   }
 
   const copied = await copyText(shareUrlFor(list.map((app) => app.id)));
-  showStatus(
-    copied ? 'Share link copied.' : 'Could not copy the link. Copy the address bar instead.',
-    !copied
-  );
+  showStatus(copied ? t('status.shareCopied') : t('status.shareFailed'), !copied);
 }
 
 function initializeSelection() {
@@ -504,6 +505,28 @@ function initializeSelection() {
 
     updateSelectionUI();
     persistSelection();
+  });
+}
+
+function initializeLanguage() {
+  initI18n(elements.languageSelect);
+
+  onLanguageChange(() => {
+    elements.searchInput.placeholder = t('search.placeholder', { count: apps.length });
+    elements.resultCount.textContent = countLabel(apps.length);
+
+    for (const record of rowRecords) {
+      const info = record.row.querySelector('.info-btn');
+      if (info) {
+        const label = t('details.aria', { name: record.app.name });
+        info.setAttribute('aria-label', label);
+        info.title = label;
+      }
+    }
+
+    initializeFooter();
+    updateSelectionUI();
+    applyFilter();
   });
 }
 
@@ -550,9 +573,7 @@ function initializeSupport() {
       }
 
       const copied = await copyText(code.textContent);
-      elements.supportStatus.textContent = copied
-        ? 'Address copied. Thank you!'
-        : 'Could not copy. Select the address manually.';
+      elements.supportStatus.textContent = copied ? t('support.copied') : t('support.copyFailed');
       elements.supportStatus.classList.toggle('is-error', !copied);
       window.clearTimeout(supportStatusTimer);
       supportStatusTimer = window.setTimeout(() => {
@@ -567,21 +588,23 @@ function initializeFooter() {
   const verified = new Date(`${appData.meta.verifiedOn}T00:00:00Z`);
   const verifiedLabel = Number.isNaN(verified.getTime())
     ? appData.meta.verifiedOn
-    : new Intl.DateTimeFormat('en-US', {
+    : new Intl.DateTimeFormat(getLanguage(), {
         dateStyle: 'long',
         timeZone: 'UTC'
       }).format(verified);
 
-  elements.catalogFootnote.textContent =
-    `${apps.length} apps in ${appData.categories.length} categories. Package IDs checked against ` +
-    `winget ${appData.meta.wingetVersion} on ${verifiedLabel}. This is a fixed catalog, not a live ` +
-    'mirror of winget.';
+  elements.catalogFootnote.textContent = t('footnote.text', {
+    apps: apps.length,
+    categories: appData.categories.length,
+    version: appData.meta.wingetVersion,
+    date: verifiedLabel
+  });
 }
 
 function initializeSearch() {
   elements.heroCount.textContent = String(apps.length);
-  elements.searchInput.placeholder = `Search ${apps.length} apps or publishers`;
-  elements.resultCount.textContent = appCountLabel(apps.length);
+  elements.searchInput.placeholder = t('search.placeholder', { count: apps.length });
+  elements.resultCount.textContent = countLabel(apps.length);
 
   elements.searchInput.addEventListener('input', applyFilter);
 
@@ -685,9 +708,7 @@ function initializeSelectionEvents() {
 
     const app = byId.get(activeDialogId);
     const copied = await copyText(app.id);
-    elements.dialogCopyStatus.textContent = copied
-      ? 'Package ID copied.'
-      : 'Could not copy the package ID.';
+    elements.dialogCopyStatus.textContent = copied ? t('status.idCopied') : t('status.idCopyFailed');
     window.clearTimeout(dialogStatusTimer);
     dialogStatusTimer = window.setTimeout(() => {
       elements.dialogCopyStatus.textContent = '';
@@ -711,6 +732,7 @@ function initializeInstallObserver() {
   observer.observe(elements.installSection);
 }
 
+initializeLanguage();
 renderCatalog();
 initializeSearch();
 initializeSelectionEvents();
