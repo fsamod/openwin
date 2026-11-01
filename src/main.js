@@ -235,10 +235,30 @@ function shareUrlFor(ids) {
 
 function syncUrl() {
   try {
-    window.history.replaceState(null, '', shareUrlFor(selectedApps().map((app) => app.id)));
+    const nextUrl = shareUrlFor(selectedApps().map((app) => app.id));
+    if (nextUrl !== window.location.href) {
+      window.history.pushState(null, '', nextUrl);
+    }
   } catch {
     // Ignore history restrictions, for example when opened from a local file.
   }
+}
+
+function restoreSelectionFromUrl() {
+  const nextSelection = readHashSelection();
+  if (nextSelection === null) {
+    return;
+  }
+
+  selected.clear();
+  for (const id of nextSelection) {
+    if (byId.has(id)) {
+      selected.add(id);
+    }
+  }
+
+  updateSelectionUI();
+  persistSelection();
 }
 
 function readStoredSelection() {
@@ -490,22 +510,8 @@ function initializeSelection() {
     syncUrl();
   }
 
-  window.addEventListener('hashchange', () => {
-    const nextSelection = readHashSelection();
-    if (nextSelection === null) {
-      return;
-    }
-
-    selected.clear();
-    for (const id of nextSelection) {
-      if (byId.has(id)) {
-        selected.add(id);
-      }
-    }
-
-    updateSelectionUI();
-    persistSelection();
-  });
+  window.addEventListener('popstate', restoreSelectionFromUrl);
+  window.addEventListener('hashchange', restoreSelectionFromUrl);
 }
 
 function initializeLanguage() {

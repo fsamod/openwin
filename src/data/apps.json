@@ -83,7 +83,7 @@
       "homepage": "https://github.com/Hibbiki/chromium-win64",
       "category": "browsers",
       "source": "winget",
-      "icon": "icons/hibbiki.chromium.jpg"
+      "icon": "icons/hibbiki.chromium.svg"
     },
     {
       "id": "Microsoft.Edge",
@@ -93,7 +93,7 @@
       "homepage": "https://www.microsoft.com/edge",
       "category": "browsers",
       "source": "winget",
-      "icon": "icons/microsoft.edge.png"
+      "icon": "icons/microsoft.edge.svg"
     },
     {
       "id": "Mozilla.Firefox",
@@ -173,7 +173,7 @@
       "homepage": "https://github.com/Eloston/ungoogled-chromium",
       "category": "browsers",
       "source": "winget",
-      "icon": "icons/eloston.ungoogled-chromium.png"
+      "icon": "icons/eloston.ungoogled-chromium.svg"
     },
     {
       "id": "Vivaldi.Vivaldi",
@@ -223,7 +223,7 @@
       "homepage": "https://www.chatterino.com/",
       "category": "communications",
       "source": "winget",
-      "icon": "icons/chatterinoteam.chatterino.jpg"
+      "icon": "icons/chatterinoteam.chatterino.svg"
     },
     {
       "id": "Discord.Discord",
@@ -273,7 +273,7 @@
       "homepage": "https://qtox.github.io/",
       "category": "communications",
       "source": "winget",
-      "icon": "icons/tox.qtox.ico"
+      "icon": "icons/tox.qtox.png"
     },
     {
       "id": "OpenWhisperSystems.Signal",
@@ -293,7 +293,7 @@
       "homepage": "https://slack.com/",
       "category": "communications",
       "source": "winget",
-      "icon": "icons/slacktechnologies.slack.png"
+      "icon": "icons/slacktechnologies.slack.svg"
     },
     {
       "id": "Microsoft.Teams",
@@ -303,7 +303,7 @@
       "homepage": "https://www.microsoft.com/en-us/microsoft-teams/group-chat-software",
       "category": "communications",
       "source": "winget",
-      "icon": "icons/microsoft.teams.png"
+      "icon": "icons/microsoft.teams.svg"
     },
     {
       "id": "TeamSpeakSystems.TeamSpeakClient",
@@ -353,7 +353,7 @@
       "homepage": "https://github.com/Vencord/Vesktop",
       "category": "communications",
       "source": "winget",
-      "icon": "icons/vencord.vesktop.png"
+      "icon": "icons/vencord.vesktop.svg"
     },
     {
       "id": "Rakuten.Viber",
@@ -373,7 +373,7 @@
       "homepage": "https://apps.microsoft.com/detail/9nksqgp7f2nh",
       "category": "communications",
       "source": "msstore",
-      "icon": "icons/9nksqgp7f2nh.png"
+      "icon": "icons/9nksqgp7f2nh.svg"
     },
     {
       "id": "Zoom.Zoom",
@@ -383,7 +383,7 @@
       "homepage": "https://zoom.us/",
       "category": "communications",
       "source": "winget",
-      "icon": "icons/zoom.zoom.png"
+      "icon": "icons/zoom.zoom.svg"
     },
     {
       "id": "Bruno.Bruno",
@@ -403,7 +403,7 @@
       "homepage": "https://apps.microsoft.com/detail/9nt1r1c2hh7j",
       "category": "development",
       "source": "msstore",
-      "icon": "icons/9plm9xgg6vks.png"
+      "icon": "icons/9plm9xgg6vks.svg"
     },
     {
       "id": "Anthropic.Claude",
@@ -473,7 +473,7 @@
       "homepage": "https://github.com/Schniz/fnm",
       "category": "development",
       "source": "winget",
-      "icon": "icons/schniz.fnm.jpg"
+      "icon": "icons/schniz.fnm.svg"
     },
     {
       "id": "Git.Git",
@@ -493,7 +493,7 @@
       "homepage": "https://gitextensions.github.io/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/gitextensionsteam.gitextensions.png"
+      "icon": "icons/gitextensionsteam.gitextensions.svg"
     },
     {
       "id": "GitHub.cli",
@@ -503,7 +503,7 @@
       "homepage": "https://cli.github.com/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/github.cli.png"
+      "icon": "icons/github.cli.svg"
     },
     {
       "id": "GitHub.GitHubDesktop",
@@ -523,7 +523,7 @@
       "homepage": "https://go.dev/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/golang.go.png"
+      "icon": "icons/golang.go.svg"
     },
     {
       "id": "Amazon.Corretto.21.JDK",
@@ -563,7 +563,7 @@
       "homepage": "https://www.jetbrains.com/toolbox/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/jetbrains.toolbox.png"
+      "icon": "icons/jetbrains.toolbox.svg"
     },
     {
       "id": "JesseDuffield.lazygit",
@@ -573,7 +573,7 @@
       "homepage": "https://github.com/jesseduffield/lazygit/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/jesseduffield.lazygit.jpg"
+      "icon": "icons/jesseduffield.lazygit.svg"
     },
     {
       "id": "rjpcomputing.luaforwindows",
@@ -583,7 +583,7 @@
       "homepage": "https://github.com/rjpcomputing/luaforwindows",
       "category": "development",
       "source": "winget",
-      "icon": "icons/rjpcomputing.luaforwindows.jpg"
+      "icon": "icons/rjpcomputing.luaforwindows.svg"
     },
     {
       "id": "Neovim.Neovim",
@@ -623,7 +623,7 @@
       "homepage": "https://pnpm.io/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/pnpm.pnpm.png"
+      "icon": "icons/pnpm.pnpm.svg"
     },
     {
       "id": "JanDeDobbeleer.OhMyPosh",
@@ -663,7 +663,7 @@
       "homepage": "https://rubyinstaller.org/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/rubyinstallerteam.ruby.4.0.png"
+      "icon": "icons/rubyinstallerteam.ruby.4.0.svg"
     },
     {
       "id": "Rustlang.Rust.MSVC",
@@ -693,7 +693,7 @@
       "homepage": "https://www.sublimetext.com/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/sublimehq.sublimetext.4.png"
+      "icon": "icons/sublimehq.sublimetext.4.svg"
     },
     {
       "id": "WinsiderSS.SystemInformer",
@@ -723,7 +723,7 @@
       "homepage": "https://docs.astral.sh/uv/getting-started/installation/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/astral-sh.uv.png"
+      "icon": "icons/astral-sh.uv.svg"
     },
     {
       "id": "Hashicorp.Vagrant",
@@ -743,7 +743,7 @@
       "homepage": "https://visualstudio.microsoft.com/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/microsoft.visualstudio.2022.community.png"
+      "icon": "icons/microsoft.visualstudio.2022.community.svg"
     },
     {
       "id": "Microsoft.VisualStudio.Community",
@@ -753,7 +753,7 @@
       "homepage": "https://visualstudio.microsoft.com/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/microsoft.visualstudio.community.png"
+      "icon": "icons/microsoft.visualstudio.community.svg"
     },
     {
       "id": "Microsoft.VisualStudioCode",
@@ -773,7 +773,7 @@
       "homepage": "https://vscodium.com/",
       "category": "development",
       "source": "winget",
-      "icon": "icons/vscodium.vscodium.png"
+      "icon": "icons/vscodium.vscodium.svg"
     },
     {
       "id": "Yarn.Yarn",
@@ -1213,7 +1213,7 @@
       "homepage": "https://onedrive.live.com/",
       "category": "microsoft",
       "source": "winget",
-      "icon": "icons/microsoft.onedrive.png"
+      "icon": "icons/microsoft.onedrive.svg"
     },
     {
       "id": "Microsoft.PowerShell",
@@ -1233,7 +1233,7 @@
       "homepage": "https://github.com/microsoft/PowerToys",
       "category": "microsoft",
       "source": "winget",
-      "icon": "icons/microsoft.powertoys.png"
+      "icon": "icons/microsoft.powertoys.svg"
     },
     {
       "id": "Microsoft.Sysinternals.ProcessExplorer",
@@ -1283,7 +1283,7 @@
       "homepage": "https://aka.ms/terminal",
       "category": "microsoft",
       "source": "winget",
-      "icon": "icons/microsoft.windowsterminal.ico"
+      "icon": "icons/microsoft.windowsterminal.png"
     },
     {
       "id": "Microsoft.VCRedist.2015+.x86",
@@ -1293,7 +1293,7 @@
       "homepage": "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads",
       "category": "microsoft",
       "source": "winget",
-      "icon": "icons/microsoft.vcredist.2015-.x86.png"
+      "icon": "icons/microsoft.vcredist.2015-.x86.svg"
     },
     {
       "id": "Microsoft.VCRedist.2015+.x64",
@@ -1303,7 +1303,7 @@
       "homepage": "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads",
       "category": "microsoft",
       "source": "winget",
-      "icon": "icons/microsoft.vcredist.2015-.x64.png"
+      "icon": "icons/microsoft.vcredist.2015-.x64.svg"
     },
     {
       "id": "AIMP.AIMP",
@@ -1593,7 +1593,7 @@
       "homepage": "https://github.com/gerardog/gsudo",
       "category": "pro",
       "source": "winget",
-      "icon": "icons/gerardog.gsudo.jpg"
+      "icon": "icons/gerardog.gsudo.svg"
     },
     {
       "id": "REALiX.HWiNFO",
@@ -1613,7 +1613,7 @@
       "homepage": "https://www.cpuid.com/softwares/hwmonitor.html",
       "category": "pro",
       "source": "winget",
-      "icon": "icons/cpuid.hwmonitor.jpg"
+      "icon": "icons/cpuid.hwmonitor.svg"
     },
     {
       "id": "MullvadVPN.MullvadVPN",
@@ -1623,7 +1623,7 @@
       "homepage": "https://github.com/mullvad/mullvadvpn-app",
       "category": "pro",
       "source": "winget",
-      "icon": "icons/mullvadvpn.mullvadvpn.png"
+      "icon": "icons/mullvadvpn.mullvadvpn.svg"
     },
     {
       "id": "Insecure.Nmap",
@@ -1673,7 +1673,7 @@
       "homepage": "https://github.com/henrypp/simplewall",
       "category": "pro",
       "source": "winget",
-      "icon": "icons/henry-.simplewall.jpg"
+      "icon": "icons/henry-.simplewall.png"
     },
     {
       "id": "Ventoy.Ventoy",
@@ -1833,7 +1833,7 @@
       "homepage": "https://github.com/canton7/SyncTrayzor",
       "category": "selfhosted",
       "source": "winget",
-      "icon": "icons/synctrayzor.synctrayzor.jpg"
+      "icon": "icons/synctrayzor.synctrayzor.svg"
     },
     {
       "id": "AgileBits.1Password",
@@ -1843,7 +1843,7 @@
       "homepage": "https://1password.com/",
       "category": "utilities",
       "source": "winget",
-      "icon": "icons/agilebits.1password.png"
+      "icon": "icons/agilebits.1password.svg"
     },
     {
       "id": "7zip.7zip",
@@ -1913,7 +1913,7 @@
       "homepage": "https://ente.io/auth/",
       "category": "utilities",
       "source": "winget",
-      "icon": "icons/ente-io.auth-desktop.png"
+      "icon": "icons/ente-io.auth-desktop.svg"
     },
     {
       "id": "voidtools.Everything",
@@ -2013,7 +2013,7 @@
       "homepage": "https://peazip.github.io/",
       "category": "utilities",
       "source": "winget",
-      "icon": "icons/giorgiotani.peazip.jpg"
+      "icon": "icons/giorgiotani.peazip.png"
     },
     {
       "id": "Proton.ProtonAuthenticator",
@@ -2083,7 +2083,7 @@
       "homepage": "https://www.teamviewer.com/",
       "category": "utilities",
       "source": "winget",
-      "icon": "icons/teamviewer.teamviewer.png"
+      "icon": "icons/teamviewer.teamviewer.svg"
     },
     {
       "id": "Ghisler.TotalCommander",
@@ -2093,7 +2093,7 @@
       "homepage": "https://www.ghisler.com/",
       "category": "utilities",
       "source": "winget",
-      "icon": "icons/ghisler.totalcommander.ico"
+      "icon": "icons/ghisler.totalcommander.png"
     },
     {
       "id": "JAMSoftware.TreeSize.Free",
@@ -2123,7 +2123,7 @@
       "homepage": "https://www.win-rar.com/",
       "category": "utilities",
       "source": "winget",
-      "icon": "icons/rarlab.winrar.jpg"
+      "icon": "icons/rarlab.winrar.png"
     },
     {
       "id": "AutoHotkey.AutoHotkey",
@@ -2133,7 +2133,7 @@
       "homepage": "https://www.autohotkey.com/",
       "category": "system",
       "source": "winget",
-      "icon": "icons/autohotkey.autohotkey.png"
+      "icon": "icons/autohotkey.autohotkey.svg"
     },
     {
       "id": "Blur009.BlurAutoClicker",
@@ -2143,7 +2143,7 @@
       "homepage": "https://blur009.vercel.app/projects/blur-autoclicker/",
       "category": "system",
       "source": "winget",
-      "icon": "icons/blur009.blurautoclicker.ico"
+      "icon": "icons/blur009.blurautoclicker.png"
     },
     {
       "id": "Klocman.BulkCrapUninstaller",
@@ -2203,7 +2203,7 @@
       "homepage": "https://github.com/glzr-io/glazewm",
       "category": "system",
       "source": "winget",
-      "icon": "icons/glzr-io.glazewm.png"
+      "icon": "icons/glzr-io.glazewm.svg"
     },
     {
       "id": "sylikc.JPEGView",
@@ -2213,7 +2213,7 @@
       "homepage": "https://github.com/sylikc/jpegview",
       "category": "system",
       "source": "winget",
-      "icon": "icons/sylikc.jpegview.jpg"
+      "icon": "icons/sylikc.jpegview.png"
     },
     {
       "id": "MiniTool.PartitionWizard.Free",
@@ -2273,7 +2273,7 @@
       "homepage": "https://github.com/xM4ddy/OFGB",
       "category": "system",
       "source": "winget",
-      "icon": "icons/xm4ddy.ofgb.jpg"
+      "icon": "icons/xm4ddy.ofgb.png"
     },
     {
       "id": "OpenRGB.OpenRGB",
@@ -2293,7 +2293,7 @@
       "homepage": "https://github.com/Fleex255/PolicyPlus",
       "category": "system",
       "source": "winget",
-      "icon": "icons/fleex255.policyplus.jpg"
+      "icon": "icons/fleex255.policyplus.svg"
     },
     {
       "id": "BitSum.ProcessLasso",

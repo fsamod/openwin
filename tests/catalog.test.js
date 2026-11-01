@@ -35,7 +35,7 @@ test('catalog entries have unique IDs and valid categories and sources', () => {
 
 test('every app icon exists in public/icons', () => {
   for (const app of catalog.apps) {
-    assert.match(app.icon, /^icons\/[^/]+$/, `${app.id} has an invalid icon path`);
+    assert.match(app.icon, /^icons\/[^/]+\.(?:png|jpe?g|svg|ico)$/, `${app.id} has an invalid icon path`);
     const iconPath = path.join(projectRoot, 'public', app.icon);
     assert.ok(existsSync(iconPath), `missing icon for ${app.id}: ${app.icon}`);
   }
