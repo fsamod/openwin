@@ -1,20 +1,28 @@
 import appData from './data/apps.json';
+import { copyText } from './clipboard.js';
+import { isSafeHttpUrl, isValidApp } from './catalog.js';
 import { buildCommandText } from './install-commands.js';
 import { countLabel, getLanguage, initI18n, t, onLanguageChange } from './i18n.js';
+import { buildSearchText, matchesQuery, tokenize } from './search.js';
+import { buildAppsHash, parseAppsHash } from './share.js';
 
 const ICON_BASE = import.meta.env.BASE_URL || './';
 const STORAGE_KEY = 'openwin-selection-v1';
-const SAFE_ID = /^[A-Za-z0-9][A-Za-z0-9._+-]*$/;
 
-const categoryIds = new Set(appData.categories.map((category) => category.id));
-const apps = appData.apps.filter((app) => {
-  const isValid =
-    app &&
-    typeof app.id === 'string' &&
-    SAFE_ID.test(app.id) &&
-    typeof app.name === 'string' &&
-    categoryIds.has(app.category) &&
-    (app.source === 'winget' || app.source === 'msstore');
+const categories = Array.isArray(appData.categories)
+  ? appData.categories.filter(
+      (category) =>
+        category &&
+        typeof category.id === 'string' &&
+        category.id.trim() !== '' &&
+        typeof category.name === 'string' &&
+        category.name.trim() !== ''
+    )
+  : [];
+const categoryIds = new Set(categories.map((category) => category.id));
+const rawApps = Array.isArray(appData.apps) ? appData.apps : [];
+const apps = rawApps.filter((app) => {
+  const isValid = isValidApp(app, categoryIds);
 
   if (!isValid) {
     console.warn('Skipping invalid catalog entry:', app);
@@ -24,7 +32,7 @@ const apps = appData.apps.filter((app) => {
 });
 
 const byId = new Map(apps.map((app) => [app.id, app]));
-const categoryNames = new Map(appData.categories.map((category) => [category.id, category.name]));
+const categoryNames = new Map(categories.map((category) => [category.id, category.name]));
 
 function byIdElement(id) {
   const element = document.getElementById(id);
@@ -37,6 +45,7 @@ function byIdElement(id) {
 const elements = {
   heroCount: byIdElement('heroCount'),
   searchInput: byIdElement('searchInput'),
+  categorySelect: byIdElement('categorySelect'),
   resultCount: byIdElement('resultCount'),
   categoryColumns: byIdElement('categoryColumns'),
   emptyState: byIdElement('emptyState'),
@@ -58,6 +67,7 @@ const elements = {
   dialogName: byIdElement('dialogName'),
   dialogPublisher: byIdElement('dialogPublisher'),
   dialogSource: byIdElement('dialogSource'),
+  dialogPreview: byIdElement('dialogPreview'),
   dialogDesc: byIdElement('dialogDesc'),
   dialogId: byIdElement('dialogId'),
   dialogCopyId: byIdElement('dialogCopyId'),
@@ -84,13 +94,6 @@ let installSectionVisible = false;
 let statusTimer = null;
 let dialogStatusTimer = null;
 let supportStatusTimer = null;
-
-function normalize(value) {
-  return String(value)
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
-}
 
 function iconUrl(app) {
   return `${ICON_BASE}${app.icon}`;
@@ -144,6 +147,13 @@ function createAppRow(app, index) {
 
   label.append(createIcon(app, 'icon-wrap'), name);
 
+  if (app.preview) {
+    const badge = document.createElement('span');
+    badge.className = 'app-badge';
+    badge.textContent = t('dialog.preview');
+    label.append(badge);
+  }
+
   const info = document.createElement('button');
   info.type = 'button';
   info.className = 'info-btn';
@@ -165,7 +175,7 @@ function createAppRow(app, index) {
 }
 
 function renderCatalog() {
-  for (const category of appData.categories) {
+  for (const category of categories) {
     const categoryApps = apps.filter((app) => app.category === category.id);
 
     const section = document.createElement('section');
@@ -185,6 +195,7 @@ function renderCatalog() {
     list.className = 'app-list';
 
     const state = {
+      id: category.id,
       section,
       count,
       total: categoryApps.length,
@@ -193,10 +204,7 @@ function renderCatalog() {
 
     categoryApps.forEach((app) => {
       const row = createAppRow(app, rowRecords.length);
-      const haystack = normalize(
-        [app.name, app.publisher, app.id, category.name, app.source].join(' ')
-      );
-      const record = { row, app, haystack };
+      const record = { row, app, searchText: buildSearchText(app, category.name) };
 
       list.append(row);
       rowRecords.push(record);
@@ -223,13 +231,12 @@ function persistSelection() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
     }
   } catch {
-    // Storage can be unavailable in private browsing or embedded views.
   }
 }
 
 function shareUrlFor(ids) {
   const url = new URL(window.location.href);
-  url.hash = ids.length > 0 ? `apps=${encodeURIComponent(ids.join(','))}` : '';
+  url.hash = buildAppsHash(ids);
   return url.toString();
 }
 
@@ -237,10 +244,9 @@ function syncUrl() {
   try {
     const nextUrl = shareUrlFor(selectedApps().map((app) => app.id));
     if (nextUrl !== window.location.href) {
-      window.history.pushState(null, '', nextUrl);
+      window.history.replaceState(null, '', nextUrl);
     }
   } catch {
-    // Ignore history restrictions, for example when opened from a local file.
   }
 }
 
@@ -275,20 +281,7 @@ function readStoredSelection() {
 }
 
 function readHashSelection() {
-  const hash = window.location.hash.slice(1);
-  if (!hash) {
-    return null;
-  }
-
-  const params = new URLSearchParams(hash);
-  if (!params.has('apps')) {
-    return null;
-  }
-
-  return (params.get('apps') || '')
-    .split(',')
-    .map((id) => id.trim())
-    .filter((id) => byId.has(id));
+  return parseAppsHash(window.location.hash, (id) => byId.has(id));
 }
 
 function clearStatus() {
@@ -369,14 +362,26 @@ function setSelection(id, shouldSelect) {
 }
 
 function applyFilter() {
-  const query = normalize(elements.searchInput.value.trim());
+  const tokens = tokenize(elements.searchInput.value);
+  const selectedCategory = elements.categorySelect.value;
+  const hasQuery = tokens.length > 0;
+  const hasCategory = selectedCategory !== '';
   let matches = 0;
 
   for (const state of categoryStates) {
+    if (hasCategory && state.id !== selectedCategory) {
+      for (const record of state.records) {
+        record.row.hidden = true;
+      }
+      state.section.hidden = true;
+      state.count.textContent = String(state.total);
+      continue;
+    }
+
     let categoryMatches = 0;
 
     for (const record of state.records) {
-      const isMatch = query === '' || record.haystack.includes(query);
+      const isMatch = matchesQuery(record.searchText, tokens);
       record.row.hidden = !isMatch;
       if (isMatch) {
         categoryMatches += 1;
@@ -384,29 +389,36 @@ function applyFilter() {
     }
 
     state.section.hidden = categoryMatches === 0;
-    state.count.textContent =
-      query === '' ? String(state.total) : `${categoryMatches}/${state.total}`;
+    state.count.textContent = hasQuery
+      ? `${categoryMatches}/${state.total}`
+      : String(state.total);
     matches += categoryMatches;
   }
 
   elements.emptyState.hidden = matches !== 0;
-  elements.emptyMessage.textContent =
-    query === ''
-      ? t('empty.title')
-      : t('empty.titleQuery', { query: elements.searchInput.value.trim() });
+
+  if (hasQuery) {
+    elements.emptyMessage.textContent = t('empty.titleQuery', {
+      query: elements.searchInput.value.trim()
+    });
+  } else if (hasCategory) {
+    elements.emptyMessage.textContent = t('empty.titleFilter');
+  } else {
+    elements.emptyMessage.textContent = t('empty.title');
+  }
+
   elements.resultCount.textContent =
-    query === ''
-      ? countLabel(apps.length)
-      : t('result.matched', { matched: matches, total: apps.length });
+    hasQuery || hasCategory
+      ? t('result.matched', { matched: matches, total: apps.length })
+      : countLabel(apps.length);
 }
 
 function safeHttpUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : null;
-  } catch {
+  if (!isSafeHttpUrl(value)) {
     return null;
   }
+
+  return new URL(value).href;
 }
 
 function openDetails(app) {
@@ -419,6 +431,8 @@ function openDetails(app) {
   elements.dialogSource.textContent =
     app.source === 'msstore' ? t('dialog.source.msstore') : t('dialog.source.winget');
   elements.dialogSource.classList.toggle('is-store', app.source === 'msstore');
+  elements.dialogPreview.hidden = !app.preview;
+  elements.dialogPreview.textContent = app.preview ? t('dialog.preview') : '';
   elements.dialogDesc.textContent = app.description;
   elements.dialogId.textContent = app.id;
   elements.dialogCategory.textContent = categoryNames.get(app.category) || app.category;
@@ -428,41 +442,14 @@ function openDetails(app) {
   if (homepage) {
     elements.dialogHome.href = homepage;
     elements.dialogHome.textContent = t('dialog.visit');
+  } else {
+    elements.dialogHome.removeAttribute('href');
+    elements.dialogHome.textContent = '';
   }
 
   updateDialogToggle();
   elements.appDialog.showModal();
   document.body.classList.add('dialog-open');
-}
-
-async function copyText(text) {
-  if (navigator.clipboard && window.isSecureContext) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      // Fall through to the textarea fallback.
-    }
-  }
-
-  const area = document.createElement('textarea');
-  area.value = text;
-  area.setAttribute('readonly', '');
-  area.style.position = 'fixed';
-  area.style.top = '-1000px';
-  area.style.opacity = '0';
-  document.body.append(area);
-  area.select();
-
-  let copied = false;
-  try {
-    copied = document.execCommand('copy');
-  } catch {
-    copied = false;
-  }
-
-  area.remove();
-  return copied;
 }
 
 async function copyCommand() {
@@ -479,7 +466,11 @@ async function copyCommand() {
     !copied
   );
   if (!copied) {
-    elements.commandPreview.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    elements.commandPreview.scrollIntoView({
+      block: 'center',
+      behavior: reduceMotion ? 'auto' : 'smooth'
+    });
   }
 }
 
@@ -527,6 +518,11 @@ function initializeLanguage() {
         const label = t('details.aria', { name: record.app.name });
         info.setAttribute('aria-label', label);
         info.title = label;
+      }
+
+      const badge = record.row.querySelector('.app-badge');
+      if (badge) {
+        badge.textContent = t('dialog.preview');
       }
     }
 
@@ -591,9 +587,10 @@ function initializeSupport() {
 }
 
 function initializeFooter() {
-  const verified = new Date(`${appData.meta.verifiedOn}T00:00:00Z`);
+  const meta = appData.meta || {};
+  const verified = new Date(`${meta.verifiedOn || ''}T00:00:00Z`);
   const verifiedLabel = Number.isNaN(verified.getTime())
-    ? appData.meta.verifiedOn
+    ? meta.verifiedOn || t('footnote.unknown')
     : new Intl.DateTimeFormat(getLanguage(), {
         dateStyle: 'long',
         timeZone: 'UTC'
@@ -601,8 +598,8 @@ function initializeFooter() {
 
   elements.catalogFootnote.textContent = t('footnote.text', {
     apps: apps.length,
-    categories: appData.categories.length,
-    version: appData.meta.wingetVersion,
+    categories: categories.length,
+    version: meta.wingetVersion || t('footnote.unknown'),
     date: verifiedLabel
   });
 }
@@ -612,10 +609,19 @@ function initializeSearch() {
   elements.searchInput.placeholder = t('search.placeholder', { count: apps.length });
   elements.resultCount.textContent = countLabel(apps.length);
 
+  for (const category of categories) {
+    const option = document.createElement('option');
+    option.value = category.id;
+    option.textContent = category.name;
+    elements.categorySelect.append(option);
+  }
+
   elements.searchInput.addEventListener('input', applyFilter);
+  elements.categorySelect.addEventListener('change', applyFilter);
 
   elements.clearSearch.addEventListener('click', () => {
     elements.searchInput.value = '';
+    elements.categorySelect.value = '';
     applyFilter();
     elements.searchInput.focus();
   });
@@ -629,7 +635,12 @@ function initializeSearch() {
     const isEditing =
       target && (target.matches('input, textarea, select') || target.isContentEditable);
 
-    if (event.key === '/' && !isEditing && !elements.appDialog.open) {
+    if (
+      event.key === '/' &&
+      !isEditing &&
+      !elements.appDialog.open &&
+      !elements.supportDialog.open
+    ) {
       event.preventDefault();
       elements.searchInput.focus();
       elements.searchInput.select();
@@ -713,6 +724,10 @@ function initializeSelectionEvents() {
     }
 
     const app = byId.get(activeDialogId);
+    if (!app) {
+      return;
+    }
+
     const copied = await copyText(app.id);
     elements.dialogCopyStatus.textContent = copied ? t('status.idCopied') : t('status.idCopyFailed');
     window.clearTimeout(dialogStatusTimer);

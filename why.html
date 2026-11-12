@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#0b0d10" />
+    <script src="./theme-init.js"></script>
+    <meta
+      name="description"
+      content="Why OpenWin exists, how it differs from Ninite and winget search, and what it does not try to do."
+    />
+    <link rel="canonical" href="https://fsamod.github.io/openwin/why.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="OpenWin" />
+    <meta property="og:title" content="Why OpenWin" />
+    <meta
+      property="og:description"
+      content="Why OpenWin exists, how it differs from Ninite and winget search, and what it does not try to do."
+    />
+    <meta property="og:url" content="https://fsamod.github.io/openwin/why.html" />
+    <meta property="og:image" content="https://fsamod.github.io/openwin/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Why OpenWin" />
+    <meta
+      name="twitter:description"
+      content="Why OpenWin exists, how it differs from Ninite and winget search, and what it does not try to do."
+    />
+    <meta name="twitter:image" content="https://fsamod.github.io/openwin/og-image.png" />
+    <title>Why OpenWin</title>
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header page-header">
+      <div class="container header-inner">
+        <a class="brand" href="./index.html" aria-label="OpenWin home">
+          <img class="brand-mark" src="./brand-mark.png" alt="" width="29" height="29" />
+          <span class="brand-name">OpenWin</span>
+        </a>
+        <nav class="site-nav page-nav" aria-label="Primary navigation">
+          <a href="./index.html">Apps</a>
+          <a href="./why.html" aria-current="page">Why OpenWin</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./security.html">Security</a>
+          <a href="./contact.html">Contact</a>
+          <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="page-main">
+      <div class="container">
+        <article class="prose">
+          <p class="page-kicker">Why OpenWin</p>
+          <h1 class="page-title">A picker, not another installer</h1>
+          <p class="page-lede">
+            OpenWin helps you choose a set of Windows apps and gives you the winget commands. It
+            does not download, bundle, or run anything itself.
+          </p>
+          <p class="page-meta">Last updated: 10 November 2026</p>
+
+          <h2>What you get</h2>
+          <ul>
+            <li>A fixed catalog of 231 apps in 11 categories.</li>
+            <li>One exact <code>winget install</code> command per selected app.</li>
+            <li>The full command block before you copy or run anything.</li>
+            <li>Search across names, publishers, package IDs, descriptions, categories, and source labels.</li>
+            <li>A shareable selection stored in the URL fragment.</li>
+            <li>No account, no analytics, and no advertising.</li>
+          </ul>
+
+          <h2>How it differs from Ninite</h2>
+          <p>
+            Ninite is a separate proprietary service that downloads and installs the apps you pick.
+            OpenWin is an open-source static site that only generates commands for winget. It is not
+            affiliated with Ninite, and it does not use Ninite's installers or catalog.
+          </p>
+
+          <h2>How it differs from searching winget yourself</h2>
+          <p>
+            <code>winget search</code> returns live search results, which can include similar names
+            or multiple packages from the same publisher. OpenWin uses exact package IDs from a
+            fixed catalog, so the command you copy points at the package the catalog lists. The
+            tradeoff is that OpenWin is not a live mirror of winget. New apps and changes arrive
+            through repository updates.
+          </p>
+
+          <h2>Why the catalog is fixed</h2>
+          <p>
+            A fixed catalog is easier to review, test, and keep predictable. Every app has a name,
+            publisher, description, homepage, category, source, and icon. The site shows when the
+            package IDs were last checked. It does not claim that the catalog is complete or that
+            every app is right for every PC.
+          </p>
+
+          <h2>What it does not do</h2>
+          <ul>
+            <li>It does not install, update, or uninstall apps for you.</li>
+            <li>It does not run commands in the background.</li>
+            <li>It does not bundle installers or offers.</li>
+            <li>It does not require an account or collect analytics.</li>
+            <li>It does not verify that an app is malware-free or safe.</li>
+          </ul>
+
+          <h2>Who it is for</h2>
+          <p>
+            OpenWin is for people who know roughly which apps they want on a fresh Windows install
+            and would rather copy a short command list than click through a series of download
+            wizards. It is also useful when you want to send someone a reproducible list of apps.
+          </p>
+
+          <h2>Open source</h2>
+          <p>
+            OpenWin is licensed under the MIT License. The catalog, the site, and the command
+            generator are in the
+            <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer"
+              >OpenWin repository</a
+            >. Contributions and corrections are welcome. See the
+            <a href="./contact.html">Contact page</a> for the feedback process.
+          </p>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-legal">
+        <div class="container legal-inner">
+          <nav class="legal-links" aria-label="Footer navigation">
+            <a href="./index.html">Apps</a>
+            <a href="./why.html">Why OpenWin</a>
+            <a href="./privacy.html">Privacy</a>
+            <a href="./security.html">Security</a>
+            <a href="./contact.html">Contact</a>
+            <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a
+              href="https://github.com/fsamod/openwin/blob/main/LICENSE"
+              target="_blank"
+              rel="noopener noreferrer"
+              >MIT License</a
+            >
+          </nav>
+          <p>&copy; 2026 OpenWin. Not affiliated with Microsoft, Ninite, or any app publisher.</p>
+          <p class="footer-note">
+            These information pages are currently available in English only. The app picker
+            supports English and German.
+          </p>
+          <p class="footer-signature">from mars by fsamod</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

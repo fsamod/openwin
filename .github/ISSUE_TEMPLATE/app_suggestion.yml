@@ -1,0 +1,65 @@
+name: App suggestion
+description: Suggest an app for the fixed OpenWin catalog.
+title: "[App]: "
+labels: ["enhancement"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: App name
+      placeholder: App name
+    validations:
+      required: true
+  - type: input
+    id: package
+    attributes:
+      label: Package ID
+      placeholder: Publisher.Package or Microsoft Store product ID
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Source
+      options:
+        - winget
+        - Microsoft Store
+    validations:
+      required: true
+  - type: input
+    id: homepage
+    attributes:
+      label: Official homepage
+      placeholder: https://example.com/
+    validations:
+      required: true
+  - type: dropdown
+    id: release
+    attributes:
+      label: Release channel
+      options:
+        - Stable
+        - Beta or preview
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why should it be included?
+      description: Explain who the app is for and why it belongs in the fixed catalog.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Verification
+      description: Paste the output of `winget show --id <package-id> --exact --source <source>` or link to the official listing.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: The package ID resolves in the selected source.
+          required: true
+        - label: This suggestion does not contain passwords, keys, or other secrets.
+          required: true

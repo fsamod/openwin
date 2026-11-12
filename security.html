@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#0b0d10" />
+    <script src="./theme-init.js"></script>
+    <meta
+      name="description"
+      content="What OpenWin checks, what winget and the Microsoft Store check, and what OpenWin does not verify."
+    />
+    <link rel="canonical" href="https://fsamod.github.io/openwin/security.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="OpenWin" />
+    <meta property="og:title" content="Security - OpenWin" />
+    <meta
+      property="og:description"
+      content="What OpenWin checks, what winget and the Microsoft Store check, and what OpenWin does not verify."
+    />
+    <meta property="og:url" content="https://fsamod.github.io/openwin/security.html" />
+    <meta property="og:image" content="https://fsamod.github.io/openwin/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Security - OpenWin" />
+    <meta
+      name="twitter:description"
+      content="What OpenWin checks, what winget and the Microsoft Store check, and what OpenWin does not verify."
+    />
+    <meta name="twitter:image" content="https://fsamod.github.io/openwin/og-image.png" />
+    <title>Security - OpenWin</title>
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header page-header">
+      <div class="container header-inner">
+        <a class="brand" href="./index.html" aria-label="OpenWin home">
+          <img class="brand-mark" src="./brand-mark.png" alt="" width="29" height="29" />
+          <span class="brand-name">OpenWin</span>
+        </a>
+        <nav class="site-nav page-nav" aria-label="Primary navigation">
+          <a href="./index.html">Apps</a>
+          <a href="./why.html">Why OpenWin</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./security.html" aria-current="page">Security</a>
+          <a href="./contact.html">Contact</a>
+          <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="page-main">
+      <div class="container">
+        <article class="prose">
+          <p class="page-kicker">Security</p>
+          <h1 class="page-title">Security</h1>
+          <p class="page-lede">
+            OpenWin checks its own catalog and command generation. It does not verify that an app is
+            safe, and it does not replace winget or the Microsoft Store.
+          </p>
+          <p class="page-meta">Last updated: 10 November 2026</p>
+
+          <h2>What OpenWin checks</h2>
+          <ul>
+            <li>Package IDs must match a restricted character set before a command is generated.</li>
+            <li>Every catalog entry uses the <code>winget</code> or <code>msstore</code> source.</li>
+            <li>
+              The catalog was checked against winget 1.29.380 on 9 November 2026. Every package ID
+              resolved at that time.
+            </li>
+            <li>Icons are served from this site. The app picker makes no third-party requests.</li>
+            <li>Commands are generated in your browser and shown before you copy them.</li>
+          </ul>
+          <p>
+            Resolving a package ID means winget or the Microsoft Store recognizes it. It does not
+            mean the package is safe, current, or suitable for you.
+          </p>
+
+          <h2>What OpenWin does not check</h2>
+          <ul>
+            <li>Package contents, installers, or downloaded files.</li>
+            <li>Publisher identity beyond the metadata shown in the catalog.</li>
+            <li>Malware, viruses, or unwanted behavior.</li>
+            <li>Licenses, privacy practices, or update policies.</li>
+            <li>Microsoft Store certification or winget manifest review.</li>
+            <li>Homepage content or whether a description is complete.</li>
+          </ul>
+          <p>OpenWin does not claim that any app is malware-free or independently security-verified.</p>
+
+          <h2>What winget and the Microsoft Store do</h2>
+          <p>
+            winget reads package manifests from configured sources and downloads installers from the
+            locations in those manifests. The Microsoft Store source uses Microsoft's Store
+            infrastructure. Each source has its own validation and policy processes, and some
+            installers are signed while others are not. OpenWin does not add to or replace those
+            checks.
+          </p>
+
+          <h2>What the generated command does</h2>
+          <pre>winget install --id "Brave.Brave" --source winget --exact --accept-package-agreements --accept-source-agreements --disable-interactivity</pre>
+          <ul>
+            <li>
+              <code>--id</code> and <code>--exact</code> select the exact package ID instead of a
+              search result.
+            </li>
+            <li><code>--source</code> selects the winget or Microsoft Store source.</li>
+            <li>
+              <code>--accept-package-agreements</code> and
+              <code>--accept-source-agreements</code> accept the publisher and source agreements
+              when the command runs. Review those agreements before you run it.
+            </li>
+            <li><code>--disable-interactivity</code> prevents interactive prompts during the install.</li>
+          </ul>
+          <p>
+            OpenWin never runs these commands. Your browser cannot run winget. The command changes
+            your PC only when you paste it into a terminal and run it.
+          </p>
+
+          <h2>Site security</h2>
+          <ul>
+            <li>The site is static and has no backend, accounts, database, or file uploads.</li>
+            <li>
+              The production build adds a Content Security Policy that restricts scripts to this
+              origin and blocks forms.
+            </li>
+            <li>
+              GitHub Pages does not support custom response headers, so some headers cannot be set
+              by this project. The meta policy is a practical fallback, not a complete server
+              configuration. In particular, it cannot restrict framing, so framing protection
+              depends on the browser and host.
+            </li>
+            <li>Dependencies are kept small and checked with <code>npm audit</code>.</li>
+            <li>Catalog and command-generation tests run in CI before deployment.</li>
+          </ul>
+
+          <h2>Reporting a security issue</h2>
+          <p>
+            Email <a href="mailto:fsamod@proton.me">fsamod@proton.me</a> with the affected page or
+            file, steps to reproduce, and the impact you believe it has. Do not open a public issue
+            with exploit details or personal data.
+          </p>
+          <p>
+            If GitHub private vulnerability reporting is available on the repository's
+            <a href="https://github.com/fsamod/openwin/security" target="_blank" rel="noopener noreferrer"
+              >Security tab</a
+            >, you can use that instead. Do not test against systems you do not own.
+          </p>
+
+          <h2>No warranty</h2>
+          <p>
+            OpenWin is provided under the MIT License, without warranty. See the
+            <a
+              href="https://github.com/fsamod/openwin/blob/main/LICENSE"
+              target="_blank"
+              rel="noopener noreferrer"
+              >license</a
+            >.
+          </p>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-legal">
+        <div class="container legal-inner">
+          <nav class="legal-links" aria-label="Footer navigation">
+            <a href="./index.html">Apps</a>
+            <a href="./why.html">Why OpenWin</a>
+            <a href="./privacy.html">Privacy</a>
+            <a href="./security.html">Security</a>
+            <a href="./contact.html">Contact</a>
+            <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a
+              href="https://github.com/fsamod/openwin/blob/main/LICENSE"
+              target="_blank"
+              rel="noopener noreferrer"
+              >MIT License</a
+            >
+          </nav>
+          <p>&copy; 2026 OpenWin. Not affiliated with Microsoft, Ninite, or any app publisher.</p>
+          <p class="footer-note">
+            These information pages are currently available in English only. The app picker
+            supports English and German.
+          </p>
+          <p class="footer-signature">from mars by fsamod</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -12,7 +12,6 @@ function readStoredLanguage() {
   try {
     return window.localStorage.getItem(STORAGE_KEY);
   } catch {
-    // Storage can be unavailable in private browsing or embedded views.
     return null;
   }
 }
@@ -28,7 +27,6 @@ function detectLanguage() {
     if (!tag) {
       continue;
     }
-    // Match full tags like "de-ch" first, then base languages like "de".
     const lower = String(tag).toLowerCase();
     const base = lower.split('-')[0];
     if (LOCALES[lower]) {
@@ -94,7 +92,6 @@ export function setLanguage(code) {
   try {
     window.localStorage.setItem(STORAGE_KEY, code);
   } catch {
-    // Storage can be unavailable in private browsing or embedded views.
   }
 
   applyStaticTranslations();

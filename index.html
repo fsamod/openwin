@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="google-site-verification" content="VviJ9vTALh9GYoayT1QInAWwYfOyw6zxJddGXYQWVkc" />
     <meta name="theme-color" content="#0b0d10" />
+    <script src="./theme-init.js"></script>
     <meta
       name="description"
-      content="Free, open-source Windows app installer and Ninite alternative. Choose from 231 reviewed apps and copy exact, clean winget commands without bloat or installers."
+      content="Free, open-source Windows app picker and Ninite alternative. Choose from 231 curated apps and copy exact, clean winget commands without bloat or installers."
     />
     <meta
       name="keywords"
@@ -17,17 +19,22 @@
     <meta property="og:title" content="OpenWin - Free, Open-Source Windows App Picker &amp; Ninite Alternative" />
     <meta
       property="og:description"
-      content="Pick from 231 reviewed Windows apps and generate exact, transparent winget install commands in one click. No account, no background trackers."
+      content="Pick from 231 curated Windows apps and generate exact, transparent winget install commands in one click. No account, no background trackers."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="OpenWin" />
     <meta property="og:url" content="https://fsamod.github.io/openwin/" />
-    <meta property="og:image" content="https://fsamod.github.io/openwin/docs/logo.svg" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://fsamod.github.io/openwin/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="OpenWin app picker with an example winget install command" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="OpenWin - Windows App Picker &amp; Winget Command Generator" />
     <meta
       name="twitter:description"
-      content="Pick from 231 reviewed Windows apps and generate exact winget install commands. Free &amp; open source."
+      content="Pick from 231 curated Windows apps and generate exact winget install commands. Free &amp; open source."
     />
+    <meta name="twitter:image" content="https://fsamod.github.io/openwin/og-image.png" />
     <title>OpenWin - Install your Windows apps at once | Open-Source Ninite Alternative</title>
     <script type="application/ld+json">
     {
@@ -35,7 +42,7 @@
       "@type": "WebApplication",
       "name": "OpenWin",
       "url": "https://fsamod.github.io/openwin/",
-      "description": "A dark, Ninite-style Windows app picker that builds copyable winget command lists.",
+      "description": "A compact, Ninite-style Windows app picker with light and dark themes that builds copyable winget command lists.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Windows 10, Windows 11",
       "offers": {
@@ -50,10 +57,11 @@
       }
     }
     </script>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='1' y='1' width='22' height='22' rx='5' fill='%232563eb'/%3E%3Ctext x='12' y='17' text-anchor='middle' font-family='monospace' font-size='11' font-weight='bold' fill='white'%3E%26gt;_%3C/text%3E%3C/svg%3E"
-    />
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
     <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
@@ -64,9 +72,9 @@
     </noscript>
 
     <header class="site-header">
-      <div class="container header-inner">
+      <div class="container header-inner has-rope">
         <a class="brand" href="https://github.com/fsamod/openwin" data-i18n-aria-label="brand.aria" aria-label="OpenWin on GitHub">
-          <span class="brand-mark" aria-hidden="true">&gt;_</span>
+          <img class="brand-mark" src="./brand-mark.png" alt="" width="29" height="29" />
           <span class="brand-name">OpenWin</span>
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
@@ -87,7 +95,49 @@
             <option value="en" lang="en">English</option>
             <option value="de" lang="de">Deutsch</option>
           </select>
+          <button
+            id="themeToggle"
+            class="theme-toggle"
+            type="button"
+            aria-label="Switch to light theme"
+          >
+            <svg
+              class="theme-icon theme-icon-sun"
+              viewBox="0 0 16 16"
+              width="14"
+              height="14"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="8" cy="8" r="3.1"></circle>
+              <path
+                d="M8 1.2v1.5M8 13.3v1.5M1.2 8h1.5M13.3 8h1.5M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M12.8 3.2l-1.1 1.1M4.3 11.7l-1.1 1.1"
+              ></path>
+            </svg>
+            <svg
+              class="theme-icon theme-icon-moon"
+              viewBox="0 0 16 16"
+              width="14"
+              height="14"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M13 9.4A5.5 5.5 0 0 1 6.6 3a5.5 5.5 0 1 0 6.4 6.4Z"></path>
+            </svg>
+          </button>
         </nav>
+        <div class="header-rope">
+          <canvas
+            id="ropeCanvas"
+            class="rope-canvas"
+            width="140"
+            height="104"
+            role="button"
+            tabindex="0"
+            draggable="false"
+            aria-label="Toggle light and dark theme"
+          ></canvas>
+        </div>
       </div>
     </header>
 
@@ -95,10 +145,10 @@
       <section class="hero" aria-labelledby="heroHeading">
         <div class="container hero-grid">
           <div class="hero-main">
-            <h1 id="heroHeading" data-i18n="hero.title">Install and update all your Windows apps at once.</h1>
+            <h1 id="heroHeading" data-i18n="hero.title">Install all your Windows apps at once.</h1>
             <p class="hero-lede">
               <span data-i18n="hero.lede.before">Pick from</span> <span id="heroCount">231</span>
-              <span data-i18n="hero.lede.after">reviewed apps. No download wizards, no bundled
+              <span data-i18n="hero.lede.after">curated apps. No download wizards, no bundled
               offers, no account.</span>
             </p>
           </div>
@@ -121,7 +171,7 @@
               <input
                 id="searchInput"
                 type="search"
-                placeholder="Search 231 apps or publishers"
+                placeholder="Search 231 apps, publishers, or descriptions"
                 autocomplete="off"
                 spellcheck="false"
                 aria-keyshortcuts="/"
@@ -129,16 +179,24 @@
               />
               <kbd aria-hidden="true">/</kbd>
             </div>
-            <p id="resultCount" class="result-count" aria-live="polite">231 apps</p>
+            <div class="filter-field">
+              <label for="categorySelect" data-i18n="filter.label">Category</label>
+              <select id="categorySelect">
+                <option value="" data-i18n="filter.all">All categories</option>
+              </select>
+            </div>
+            <p id="resultCount" class="result-count" aria-live="polite" aria-atomic="true">231 apps</p>
           </div>
 
           <div id="categoryColumns" class="category-columns"></div>
 
           <div id="emptyState" class="empty-state" hidden>
             <p id="emptyMessage" class="empty-title" data-i18n="empty.title">No apps match your search.</p>
-            <p class="empty-copy" data-i18n="empty.copy">Try a different name, publisher, or package ID.</p>
+            <p class="empty-copy" data-i18n="empty.copy">
+              Try a different name, publisher, package ID, description, or category.
+            </p>
             <button id="clearSearch" class="button button-secondary" type="button" data-i18n="empty.clear">
-              Clear search
+              Clear filters
             </button>
           </div>
         </div>
@@ -204,7 +262,10 @@
           <div class="dialog-title">
             <h2 id="dialogName"></h2>
             <p id="dialogPublisher" class="dialog-publisher"></p>
-            <p id="dialogSource" class="dialog-source"></p>
+            <p class="dialog-tags">
+              <span id="dialogSource" class="dialog-source"></span>
+              <span id="dialogPreview" class="dialog-source is-preview" hidden></span>
+            </p>
           </div>
         </div>
 
@@ -288,21 +349,20 @@
     <footer class="site-footer">
       <div class="container footer-main">
         <section class="footer-will" aria-labelledby="footerWillHeading">
-          <h2 id="footerWillHeading" data-i18n="footer.willHeading">OpenWin will</h2>
-          <ul>
-            <li data-i18n="footer.will.1">build exact winget commands for the apps you pick</li>
-            <li data-i18n="footer.will.2">use exact package IDs, not search results</li>
-            <li data-i18n="footer.will.3">show every command before anything runs</li>
-            <li data-i18n="footer.will.4">keep the app list fixed and reviewed</li>
-            <li data-i18n="footer.will.5">include the correct source and agreement flags</li>
-            <li data-i18n="footer.will.6">leave out bundled offers and extra toolbars</li>
-            <li data-i18n="footer.will.7">require no account and collect no analytics</li>
-            <li data-i18n="footer.will.8">change your PC only when you run the commands</li>
-          </ul>
+          <h2 id="footerWillHeading" data-i18n="footer.willHeading">How it works</h2>
+          <p data-i18n="footer.will.1">
+            Pick the apps you want and copy one exact winget install command for each. Every command
+            is visible before you copy it, and nothing runs until you paste it into Windows Terminal.
+          </p>
+          <p data-i18n="footer.will.2">
+            Commands use exact package IDs and point at the right source. They accept the source and
+            package agreements, so winget does not stop to ask. No account, no analytics, no bundled
+            offers.
+          </p>
         </section>
 
         <section class="footer-catalog" aria-labelledby="footerCatalogHeading">
-          <h2 id="footerCatalogHeading" data-i18n="footer.catalogHeading">About the catalog</h2>
+          <h2 id="footerCatalogHeading" data-i18n="footer.catalogHeading">The catalog</h2>
           <p id="catalogFootnote"></p>
           <p class="footer-links">
             <a href="https://github.com/fsamod/openwin" data-i18n="footer.viewSource" target="_blank" rel="noopener noreferrer"
@@ -316,6 +376,8 @@
               rel="noopener noreferrer"
               >Report a problem</a
             >
+            <span aria-hidden="true">/</span>
+            <a href="./why.html" data-i18n="footer.why">Why OpenWin</a>
           </p>
         </section>
       </div>
@@ -325,6 +387,10 @@
           <nav class="legal-links" data-i18n-aria-label="legal.footnav" aria-label="Footer navigation">
             <a href="#picker" data-i18n="nav.apps">Apps</a>
             <a href="#install" data-i18n="nav.commands">Commands</a>
+            <a href="./why.html" data-i18n="footer.why">Why OpenWin</a>
+            <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a>
+            <a href="./security.html" data-i18n="footer.security">Security</a>
+            <a href="./contact.html" data-i18n="footer.contact">Contact</a>
             <a href="https://github.com/fsamod/openwin" target="_blank" rel="noopener noreferrer"
               >GitHub</a
             >
@@ -346,10 +412,12 @@
           <p data-i18n="legal.copyright">
             &copy; 2026 OpenWin. Not affiliated with Microsoft, Ninite, or any app publisher.
           </p>
+          <p class="footer-signature">from mars by fsamod</p>
         </div>
       </div>
     </footer>
 
     <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/rope.js"></script>
   </body>
 </html>

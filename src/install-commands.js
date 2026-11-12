@@ -1,5 +1,4 @@
-const SAFE_PACKAGE_ID = /^[A-Za-z0-9][A-Za-z0-9._+-]*$/;
-const SOURCES = new Set(['winget', 'msstore']);
+import { SAFE_PACKAGE_ID, SOURCES } from './catalog.js';
 
 const WINGET_FLAGS = [
   '--exact',
