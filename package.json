@@ -1,7 +1,7 @@
 {
   "name": "openwin",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A compact, Ninite-style Windows app picker with light and dark themes that builds a copyable winget command list.",
   "type": "module",
   "scripts": {

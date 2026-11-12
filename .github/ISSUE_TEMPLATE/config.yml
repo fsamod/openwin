@@ -1,5 +1,0 @@
-blank_issues_enabled: true
-contact_links:
-  - name: Security report
-    url: https://github.com/fsamod/openwin/security
-    about: Check whether private vulnerability reporting is available. Do not open a public issue with exploit details.

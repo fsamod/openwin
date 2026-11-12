@@ -174,7 +174,7 @@ test('the contact page publishes the contact email and keeps GitHub Issues for p
   const html = readPage('contact.html');
 
   assert.match(html, /mailto:fsamod@proton\.me/);
-  assert.match(html, /github\.com\/fsamod\/openwin\/issues\/new\/choose/);
+  assert.match(html, /github\.com\/fsamod\/openwin\/issues\/new"/);
   assert.match(html, /id="copyTemplate"/);
   assert.match(html, /id="feedbackTemplate"/);
 });
